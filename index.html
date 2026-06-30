@@ -3,1405 +3,569 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard – División de Áreas Verdes y Ecosistemas | MML 2026</title>
+<title>Dashboard – División de Áreas Verdes y Ecosistemas</title>
 <style>
-  :root {
-    --verde-oscuro: #1a5c2e;
-    --verde-medio: #2e7d46;
-    --verde-claro: #4caf6b;
-    --verde-suave: #e8f5ec;
-    --verde-acento: #66bb6a;
-    --azul-gob: #1565c0;
-    --azul-suave: #e3f0ff;
-    --gris-texto: #2d2d2d;
-    --gris-claro: #f5f5f5;
-    --gris-borde: #dde4dd;
-    --blanco: #ffffff;
-    --sombra: 0 2px 12px rgba(0,0,0,0.10);
-  }
+:root {
+  --verde-oscuro: #1a5c2e;
+  --verde-medio: #2e7d46;
+  --verde-claro: #4caf6b;
+  --verde-suave: #e8f5ec;
+  --verde-acento: #66bb6a;
+  --azul-gob: #1565c0;
+  --azul-suave: #e3f0ff;
+  --sombra: 0 2px 12px rgba(0,0,0,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7f5; color: #222; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* HEADER */
+.header-bar {
+  background: linear-gradient(135deg, #1a5c2e 60%, #2e7d46 100%);
+  color: white; padding: 18px 32px; display: flex; align-items: center; gap: 18px;
+}
+.header-bar .escudo { font-size: 2.4rem; }
+.header-bar h1 { font-size: 1.15rem; font-weight: 800; line-height: 1.3; }
+.header-bar p { font-size: 0.78rem; opacity: 0.82; margin-top: 2px; }
 
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f0f4f1;
-    color: var(--gris-texto);
-    min-height: 100vh;
-  }
+/* NAV */
+.nav { background: #fff; border-bottom: 2px solid #e0e0e0; display: flex; gap: 0; padding: 0 24px; }
+.nav-tab {
+  padding: 13px 20px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+  color: #555; border-bottom: 3px solid transparent; white-space: nowrap;
+  transition: all .18s;
+}
+.nav-tab:hover { color: var(--verde-oscuro); }
+.nav-tab.active { color: var(--verde-oscuro); border-bottom-color: var(--verde-oscuro); }
 
-  /* ===== HEADER ===== */
-  .header {
-    background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde-medio) 60%, #3a8a50 100%);
-    color: white;
-    padding: 0;
-  }
-  .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 28px 32px 22px;
-    display: flex;
-    align-items: flex-start;
-    gap: 24px;
-  }
-  .header-escudo {
-    width: 72px;
-    height: 72px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-    flex-shrink: 0;
-    border: 2px solid rgba(255,255,255,0.35);
-  }
-  .header-text h1 {
-    font-size: 1.55rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    line-height: 1.2;
-    margin-bottom: 6px;
-  }
-  .header-text .subtitulo {
-    font-size: 0.92rem;
-    opacity: 0.88;
-    font-weight: 400;
-    line-height: 1.5;
-  }
-  .header-text .rof-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 20px;
-    padding: 2px 12px;
-    font-size: 0.78rem;
-    margin-top: 8px;
-    font-weight: 500;
-  }
+/* TAB CONTENT */
+.tab-content { display: none; padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+.tab-content.active { display: block; }
 
-  /* ===== NAV TABS ===== */
-  .nav-tabs {
-    background: var(--verde-oscuro);
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-  .nav-tab {
-    padding: 10px 22px;
-    cursor: pointer;
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: rgba(255,255,255,0.65);
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .nav-tab.active, .nav-tab:hover {
-    color: white;
-    border-bottom-color: var(--verde-acento);
-  }
+/* CARDS */
+.section-title {
+  font-size: 1rem; font-weight: 800; color: var(--verde-oscuro);
+  margin: 24px 0 14px; display: flex; align-items: center; gap: 8px;
+  padding-bottom: 8px; border-bottom: 2px solid var(--verde-suave);
+}
+.section-title .icon { font-size: 1.1rem; }
 
-  /* ===== MAIN CONTENT ===== */
-  .main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 28px 32px 40px;
-  }
+.funciones-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.funcion-card {
+  background: white; border-radius: 10px; padding: 16px 18px;
+  box-shadow: var(--sombra); border-left: 4px solid var(--verde-claro);
+}
+.funcion-card .num { font-size: 0.72rem; font-weight: 700; color: var(--verde-medio); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.funcion-card p { font-size: 0.85rem; color: #333; line-height: 1.55; }
 
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+.info-note {
+  background: var(--verde-suave); border-left: 4px solid var(--verde-claro);
+  border-radius: 8px; padding: 12px 16px; font-size: 0.85rem; color: #2a4a2a; line-height: 1.55;
+}
 
-  /* ===== STATS ROW ===== */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-  .stat-card {
-    background: white;
-    border-radius: 12px;
-    padding: 18px 20px;
-    box-shadow: var(--sombra);
-    border-left: 4px solid var(--verde-medio);
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .stat-card.azul { border-left-color: var(--azul-gob); }
-  .stat-card.amarillo { border-left-color: #f9a825; }
-  .stat-card.rojo { border-left-color: #c62828; }
-  .stat-num {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--verde-oscuro);
-    line-height: 1;
-  }
-  .stat-card.azul .stat-num { color: var(--azul-gob); }
-  .stat-card.amarillo .stat-num { color: #e65100; }
-  .stat-card.rojo .stat-num { color: #c62828; }
-  .stat-label {
-    font-size: 0.82rem;
-    color: #666;
-    font-weight: 400;
-    line-height: 1.3;
-  }
+/* INFORMES */
+.informes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.informe-card {
+  background: white; border-radius: 10px; padding: 18px 20px; box-shadow: var(--sombra);
+}
 
-  /* ===== SECTION TITLE ===== */
-  .section-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--verde-oscuro);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--verde-suave);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-title .icon { font-size: 1.2rem; }
+/* POI */
+.poi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.poi-card { background: white; border-radius: 12px; padding: 20px 22px; box-shadow: var(--sombra); }
+.tarea-item {
+  border-radius: 8px; padding: 10px 14px; margin-bottom: 10px;
+}
+.tarea-num { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+.tarea-nombre { font-size: 0.82rem; font-weight: 600; line-height: 1.4; }
 
-  /* ===== FUNCIONES GRID ===== */
-  .funciones-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-  .funcion-card {
-    background: white;
-    border-radius: 12px;
-    padding: 18px 20px;
-    box-shadow: var(--sombra);
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    transition: transform 0.15s, box-shadow 0.15s;
-    cursor: default;
-  }
-  .funcion-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.13);
-  }
-  .funcion-num {
-    background: var(--verde-oscuro);
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.85rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .funcion-body h3 {
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--verde-oscuro);
-    margin-bottom: 5px;
-    line-height: 1.3;
-  }
-  .funcion-body p {
-    font-size: 0.82rem;
-    color: #555;
-    line-height: 1.55;
-  }
-  .funcion-tag {
-    display: inline-block;
-    background: var(--verde-suave);
-    color: var(--verde-medio);
-    border-radius: 20px;
-    padding: 1px 9px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    margin-top: 6px;
-  }
-  .funcion-tag.azul { background: var(--azul-suave); color: var(--azul-gob); }
-  .funcion-tag.naranja { background: #fff3e0; color: #e65100; }
+/* ORDENANZAS */
+.ord-card {
+  background: white; border-radius: 10px; padding: 16px 18px;
+  box-shadow: var(--sombra); margin-bottom: 12px;
+  border-left: 4px solid;
+}
+.ord-art { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.ord-titulo { font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; }
+.ord-texto { font-size: 0.82rem; color: #444; line-height: 1.55; }
+.ord-header { border-radius: 10px; padding: 16px 20px; color: white; margin-bottom: 16px; }
 
-  /* ===== BASE LEGAL ===== */
-  .legal-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-  .legal-item {
-    background: white;
-    border-radius: 10px;
-    padding: 13px 16px;
-    box-shadow: var(--sombra);
-    font-size: 0.81rem;
-    color: #444;
-    line-height: 1.45;
-    border-left: 3px solid var(--azul-gob);
-  }
-  .legal-item strong { color: var(--azul-gob); display: block; margin-bottom: 2px; }
+/* BASE LEGAL */
+.base-item { background: white; border-radius: 8px; padding: 12px 16px; box-shadow: var(--sombra); margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start; }
+.base-icon { font-size: 1.3rem; flex-shrink: 0; }
+.base-text strong { font-size: 0.88rem; }
+.base-text p { font-size: 0.8rem; color: #555; margin-top: 2px; }
 
-  /* ===== COMPETENCIAS ===== */
-  .competencias-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-  .comp-card {
-    background: white;
-    border-radius: 12px;
-    padding: 18px 16px;
-    box-shadow: var(--sombra);
-    text-align: center;
-  }
-  .comp-icon { font-size: 2rem; margin-bottom: 8px; }
-  .comp-title { font-size: 0.84rem; font-weight: 600; color: var(--verde-oscuro); line-height: 1.3; }
+/* COMPETENCIAS */
+.comp-card { background: white; border-radius: 10px; padding: 18px 20px; box-shadow: var(--sombra); margin-bottom: 14px; border-top: 3px solid var(--verde-medio); }
+.comp-title { font-size: 0.9rem; font-weight: 700; color: var(--verde-oscuro); margin-bottom: 8px; }
+.comp-text { font-size: 0.83rem; color: #333; line-height: 1.6; }
 
-  /* ===== ORGANIGRAMA ===== */
-  .org-container {
-    background: white;
-    border-radius: 14px;
-    padding: 32px 24px;
-    box-shadow: var(--sombra);
-    margin-bottom: 28px;
-    overflow-x: auto;
-  }
-  .org-tree {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    min-width: 700px;
-  }
-  .org-node {
-    border-radius: 10px;
-    padding: 11px 20px;
-    text-align: center;
-    font-size: 0.84rem;
-    font-weight: 600;
-    min-width: 220px;
-    max-width: 320px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    position: relative;
-    line-height: 1.35;
-  }
-  .org-node.nivel0 {
-    background: var(--verde-oscuro);
-    color: white;
-    min-width: 340px;
-    font-size: 0.9rem;
-    padding: 14px 24px;
-  }
-  .org-node.nivel1 {
-    background: var(--verde-medio);
-    color: white;
-    min-width: 270px;
-  }
-  .org-node.nivel2 {
-    background: #388e3c;
-    color: white;
-    min-width: 220px;
-  }
-  .org-node.nivel3 {
-    background: var(--verde-suave);
-    color: var(--verde-oscuro);
-    border: 2px solid var(--verde-acento);
-    min-width: 200px;
-  }
-  .org-node.nivel3-highlight {
-    background: #fff8e1;
-    color: #5d4037;
-    border: 2.5px solid #f9a825;
-    font-weight: 700;
-    box-shadow: 0 3px 14px rgba(249,168,37,0.28);
-  }
-  .org-node .node-sub {
-    font-size: 0.72rem;
-    font-weight: 400;
-    opacity: 0.85;
-    margin-top: 3px;
-  }
+.footer { font-size: 0.76rem; color: #888; text-align: center; padding: 20px 0 8px; border-top: 1px solid #e0e0e0; margin-top: 24px; }
 
-  /* Connectors */
-  .connector-v {
-    width: 2px;
-    background: #9e9e9e;
-    margin: 0 auto;
-  }
-  .connector-v.short { height: 22px; }
-  .connector-v.medium { height: 32px; }
-
-  .row-level {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-    width: 100%;
-    position: relative;
-  }
-  .branch-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .branch-h-line {
-    height: 2px;
-    background: #9e9e9e;
-    flex: 1;
-    align-self: flex-start;
-    margin-top: 21px;
-  }
-  .branch-h-line.left { border-radius: 2px 0 0 0; }
-  .branch-h-line.right { border-radius: 0 2px 0 0; }
-
-  .h-connector {
-    height: 2px;
-    background: #9e9e9e;
-    width: 100%;
-  }
-
-  /* Multi-branch layout */
-  .multi-branch {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-    width: 100%;
-  }
-  .branch-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .h-bar {
-    height: 2px;
-    background: #9e9e9e;
-    margin-top: 21px;
-    min-width: 40px;
-    flex: 1;
-  }
-
-  /* Sub-branch for 3 divisiones */
-  .sub-branch-row {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    position: relative;
-  }
-  .sub-branch-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-  }
-
-  .leyenda-org {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid var(--gris-borde);
-  }
-  .leyenda-item {
-    display: flex; align-items: center; gap: 8px; font-size: 0.79rem; color: #555;
-  }
-  .leyenda-box {
-    width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0;
-  }
-
-  /* Info note */
-  .info-note {
-    background: var(--azul-suave);
-    border-left: 4px solid var(--azul-gob);
-    border-radius: 0 10px 10px 0;
-    padding: 13px 18px;
-    font-size: 0.83rem;
-    color: #1a3a6e;
-    margin-bottom: 22px;
-    line-height: 1.55;
-  }
-
-  /* Footer */
-  .footer {
-    text-align: center;
-    font-size: 0.75rem;
-    color: #888;
-    margin-top: 32px;
-    padding-top: 16px;
-    border-top: 1px solid var(--gris-borde);
-  }
-
-  @media (max-width: 800px) {
-    .stats-row, .competencias-row { grid-template-columns: repeat(2, 1fr); }
-    .funciones-grid, .legal-grid { grid-template-columns: 1fr; }
-    .main { padding: 18px 14px; }
-    .header-inner { padding: 18px 14px; }
-  }
+/* LEYENDA */
+.leyenda { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.ley-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #444; }
+.ley-box { width: 16px; height: 16px; border-radius: 3px; border: 2px solid; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-inner">
-    <div class="header-escudo">🌿</div>
-    <div class="header-text">
-      <h1>División de Áreas Verdes y Ecosistemas</h1>
-      <div class="subtitulo">
-        Subgerencia de Gestión Ambiental &nbsp;·&nbsp; Gerencia de Servicios a la Ciudad y Gestión Ambiental<br>
-        Municipalidad Metropolitana de Lima
-      </div>
-      <span class="rof-badge">ROF 2026 · Ord. N.° 2729-2025-MML modificada por Ord. N.° 2813-2026</span>
-    </div>
-  </div>
-  <div class="nav-tabs">
-    <div class="nav-tab active" onclick="showTab('funciones', this)">📋 Funciones</div>
-    <div class="nav-tab" onclick="showTab('organigrama', this)">🏛️ Organigrama</div>
-    <div class="nav-tab" onclick="showTab('competencias', this)">🎯 Competencias</div>
-    <div class="nav-tab" onclick="showTab('ordenanzas', this)">⚖️ Ordenanzas</div>
-    <div class="nav-tab" onclick="showTab('baselegal', this)">📜 Base Legal</div>
+<div class="header-bar">
+  <div class="escudo">🌿</div>
+  <div>
+    <h1>División de Áreas Verdes y Ecosistemas</h1>
+    <p>Subgerencia de Gestión Ambiental · Gerencia de Servicios a la Ciudad y Gestión Ambiental · Municipalidad Metropolitana de Lima</p>
+    <p style="margin-top:4px; opacity:.7;">Ing. Forestal Rafael Rodrigo Ponce Chuquipoma · CIP N.° 212204 · OS N.° 008108-2026-MML-OGA-OL</p>
   </div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<nav class="nav">
+  <div class="nav-tab active" onclick="showTab('funciones',this)">📋 Funciones</div>
+  <div class="nav-tab" onclick="showTab('organigrama',this)">🏛️ Organigrama</div>
+  <div class="nav-tab" onclick="showTab('competencias',this)">🎯 Competencias</div>
+  <div class="nav-tab" onclick="showTab('ordenanzas',this)">⚖️ Ordenanzas</div>
+  <div class="nav-tab" onclick="showTab('baselegal',this)">📜 Base Legal</div>
+</nav>
 
-  <!-- ========== TAB: FUNCIONES ========== -->
-  <div id="tab-funciones" class="tab-content active">
+<!-- ========== TAB: FUNCIONES ========== -->
+<div id="tab-funciones" class="tab-content active">
 
-    <!-- STATS -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-num">11</div>
-        <div class="stat-label">Funciones asignadas según ROF 2026</div>
-      </div>
-      <div class="stat-card azul">
-        <div class="stat-num">4</div>
-        <div class="stat-label">Ámbitos temáticos de gestión</div>
-      </div>
-      <div class="stat-card amarillo">
-        <div class="stat-num">43</div>
-        <div class="stat-label">Distritos supervisados (provincia de Lima)</div>
-      </div>
-      <div class="stat-card rojo">
-        <div class="stat-num">3</div>
-        <div class="stat-label">Cuencas hidrográficas de coordinación</div>
-      </div>
+  <div class="section-title"><span class="icon">📋</span> Funciones asignadas según ROF 2026 – Artículo N.° 120</div>
+  <div class="info-note" style="margin-bottom:18px;">
+    Las siguientes funciones corresponden a las asignadas a la División de Áreas Verdes y Ecosistemas conforme al Artículo 120° del TUO del Reglamento de Organización y Funciones de la Municipalidad Metropolitana de Lima (Ord. N.° 2813-2026-MML).
+  </div>
+
+  <div class="funciones-grid">
+    <div class="funcion-card"><div class="num">Art. 120° · Función 1</div><p>Evaluar y vigilar la gestión ambiental integral de las playas del litoral de la provincia de Lima, coordinando con las entidades competentes las acciones necesarias para su protección y conservación.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 2</div><p>Emitir opinión técnica ambiental, dentro del marco de las competencias asignadas, a iniciativas privadas, estudios u otras iniciativas propuestas alcanzadas por las unidades de organización de la Municipalidad Metropolitana de Lima.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 3</div><p>Implementar y gestionar el Sistema de Denuncias Ambientales, ejecutando las acciones de control necesarias, en coordinación con las unidades de organización competentes.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 6</div><p>Autorizar la tala, poda severa o traslado de las especies de porte arbóreo y supervisar la compensación según corresponda, en el ámbito de la competencia de la Municipalidad Metropolitana de Lima.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 9</div><p>Evaluar y emitir opinión técnica respecto de los Planes de Manejo de las Áreas Verdes de los distritos de la provincia de Lima y formular de manera conjunta con los distritos el Plan Metropolitano de Áreas Verdes.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 17</div><p>Diseñar, formular y promover iniciativas y proyectos sobre el uso de las aguas residuales tratadas para el riego de las áreas verdes en la provincia de Lima.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 18</div><p>Formular, proponer y monitorear los planes, programas y demás instrumentos de gestión ambiental de alcance provincial establecidos en la normativa vigente.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 20</div><p>Desarrollar la supervisión y evaluación ambiental en cuanto a los ecosistemas frágiles de Lima y sus recursos naturales, cuando sea necesario, en coordinación con las entidades competentes.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 23</div><p>Programar, dirigir, monitorear y supervisar el cumplimiento de objetivos, metas e indicadores y la ejecución de actividades y presupuesto de la Subgerencia, conforme a su ámbito de competencia.</p></div>
+    <div class="funcion-card"><div class="num">Art. 120° · Función 24</div><p>Formular, proponer e implementar ordenanzas, acuerdos, decretos, resoluciones, directivas, instructivos, contratos, convenios y otras normas de aplicación institucional metropolitana, propendiendo a la mejora de los procesos, de acuerdo a sus competencias.</p></div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div class="section-title"><span class="icon">📄</span> Productos que genera la División</div>
+  <div class="informes-grid">
+    <div class="informe-card" style="border-top: 4px solid var(--verde-oscuro);">
+      <div style="font-size:0.78rem; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Producto principal</div>
+      <div style="font-size:1.1rem; font-weight:800; color:var(--verde-oscuro); margin-bottom:10px;">Informe Técnico</div>
+      <ul style="padding-left:16px; font-size:0.83rem; color:#333; line-height:1.7;">
+        <li>Sustenta resoluciones y autorizaciones de la Gerencia del Ambiente</li>
+        <li>Fundamenta técnicamente la procedencia o improcedencia de tala, poda severa y traslado arbóreo</li>
+        <li>Documenta supervisiones inopinadas a áreas verdes, playas y ecosistemas frágiles</li>
+        <li>Emite opinión técnica ambiental sobre iniciativas y expedientes</li>
+        <li>Incluye el Informe Técnico de Riesgo (ITR) para emergencias arbóreas (Art. 25° y 35° Ord. 1852-2014)</li>
+      </ul>
     </div>
-
-    <div class="info-note">
-      Las funciones descritas a continuación fueron extraídas del T.U.O. de la Ordenanza N.° 2729-2025-MML y su modificatoria mediante la Ordenanza N.° 2813-2026, que aprueba el Reglamento de Organización y Funciones (ROF) de la Municipalidad Metropolitana de Lima, y sistematizadas en el Entregable N.° 03-2026 correspondiente a la Orden de Servicio N.° 008108-2026-MML-OGA-OL.
-    </div>
-
-    <div class="section-title">
-      <span class="icon">📋</span> Funciones de la División de Áreas Verdes y Ecosistemas
-    </div>
-
-    <div class="funciones-grid">
-
-      <div class="funcion-card">
-        <div class="funcion-num">1</div>
-        <div class="funcion-body">
-          <h3>Gestión ambiental de playas y zonas marino costeras</h3>
-          <p>Evaluar y vigilar la gestión ambiental integral de las playas del litoral de la provincia de Lima, coordinando con las entidades competentes las acciones necesarias para su protección y conservación.</p>
-          <span class="funcion-tag">🏖️ Ecosistemas costeros</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">2</div>
-        <div class="funcion-body">
-          <h3>Opinión técnica ambiental a iniciativas</h3>
-          <p>Emitir opinión técnica ambiental, dentro del marco de las competencias asignadas, a iniciativas privadas, estudios u otras iniciativas propuestas alcanzadas por las unidades de organización de la MML.</p>
-          <span class="funcion-tag azul">📝 Evaluación técnica</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">3</div>
-        <div class="funcion-body">
-          <h3>Sistema de Denuncias Ambientales</h3>
-          <p>Implementar y gestionar el Sistema de Denuncias Ambientales, ejecutando las acciones de control necesarias, en coordinación con las unidades de organización competentes.</p>
-          <span class="funcion-tag naranja">⚠️ Control ambiental</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">4</div>
-        <div class="funcion-body">
-          <h3>Autorización de tala, poda y traslado arbóreo</h3>
-          <p>Autorizar la tala, poda severa o traslado de las especies de porte arbóreo y supervisar la compensación según corresponda, en el ámbito de la competencia de la Municipalidad Metropolitana de Lima.</p>
-          <span class="funcion-tag">🌳 Arbolado urbano</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">5</div>
-        <div class="funcion-body">
-          <h3>Planes de Manejo de Áreas Verdes distritales</h3>
-          <p>Evaluar y emitir opinión técnica respecto de los Planes de Manejo de las Áreas Verdes de los distritos de la provincia de Lima, y formular de manera conjunta con los distritos el Plan Metropolitano de Áreas Verdes.</p>
-          <span class="funcion-tag">🗺️ Planificación metropolitana</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">6</div>
-        <div class="funcion-body">
-          <h3>Áreas de reserva ambiental y árboles patrimoniales</h3>
-          <p>Proponer la creación y reconocimiento de áreas de reserva ambiental, así como evaluar y emitir opinión técnica respecto de las solicitudes de reconocimiento de árboles patrimoniales, conforme a la normativa vigente, en la provincia de Lima.</p>
-          <span class="funcion-tag">🏞️ Reservas ambientales</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">7</div>
-        <div class="funcion-body">
-          <h3>Aguas residuales tratadas para riego de áreas verdes</h3>
-          <p>Diseñar, formular y promover iniciativas y proyectos sobre el uso de las aguas residuales tratadas para el riego de las áreas verdes en la provincia de Lima.</p>
-          <span class="funcion-tag azul">💧 Gestión hídrica</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">8</div>
-        <div class="funcion-body">
-          <h3>Instrumentos de gestión ambiental provincial</h3>
-          <p>Formular, proponer y monitorear los planes, programas y demás instrumentos de gestión ambiental de alcance provincial establecidos en la normativa vigente.</p>
-          <span class="funcion-tag">📊 Planificación ambiental</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">9</div>
-        <div class="funcion-body">
-          <h3>Supervisión de ecosistemas frágiles</h3>
-          <p>Desarrollar la supervisión y evaluación ambiental en cuanto a los ecosistemas frágiles de Lima y sus recursos naturales, cuando sea necesario, en coordinación con las entidades competentes.</p>
-          <span class="funcion-tag naranja">🌱 Ecosistemas frágiles</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">10</div>
-        <div class="funcion-body">
-          <h3>Propuesta de normas de aplicación institucional</h3>
-          <p>Formular, proponer e implementar ordenanzas, acuerdos, decretos, resoluciones, directivas, instructivos, contratos, convenios y otras normas de aplicación institucional metropolitana, propendiendo a la mejora de los procesos.</p>
-          <span class="funcion-tag azul">⚖️ Normativa ambiental</span>
-        </div>
-      </div>
-
-      <div class="funcion-card">
-        <div class="funcion-num">11</div>
-        <div class="funcion-body">
-          <h3>Evaluación técnica de cambios de zonificación</h3>
-          <p>Evaluar técnicamente las solicitudes de cambio de zonificación en los casos que involucren propuestas de proyección y acciones de mitigación ambiental, en el marco de la normativa ambiental aplicable.</p>
-          <span class="funcion-tag naranja">🏙️ Zonificación ambiental</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ===== PRODUCTOS: INFORMES ===== -->
-    <div class="section-title" style="margin-top:4px;">
-      <span class="icon">📄</span> Productos que genera la División
-    </div>
-
-    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:24px;">
-      <div style="background:white; border-radius:12px; padding:20px 22px; box-shadow:var(--sombra); border-left:4px solid #0277bd;">
-        <div style="font-size:1.6rem; font-weight:800; color:#0277bd; margin-bottom:4px;">Informe Técnico</div>
-        <div style="font-size:0.85rem; color:#444; line-height:1.6;">
-          Documento que sustenta y motiva técnicamente las resoluciones, autorizaciones y opiniones emitidas por la División. Incluye el análisis normativo y técnico del caso. Es el insumo principal para las acciones de la Gerencia de Fiscalización y Control (Art. 11°, Ord. 1852-2014). Comprende los Informes Técnicos de Riesgo (ITR) para tala de emergencia.
-        </div>
-        <div style="margin-top:10px; font-size:0.8rem; color:#0277bd; font-weight:600;">🗂️ Aplica para: talas, podas, traslados, reservas ambientales, playas, planes de áreas verdes, ecosistemas</div>
-      </div>
-      <div style="background:white; border-radius:12px; padding:20px 22px; box-shadow:var(--sombra); border-left:4px solid #558b2f;">
-        <div style="font-size:1.6rem; font-weight:800; color:#558b2f; margin-bottom:4px;">Informe Simple</div>
-        <div style="font-size:0.85rem; color:#444; line-height:1.6;">
-          Documento administrativo de carácter informativo y de seguimiento que atiende requerimientos internos, consultas o derivaciones de expedientes. No implica necesariamente una resolución, pero registra la actuación técnico-administrativa de la División. Complementa el flujo procedimental.
-        </div>
-        <div style="margin-top:10px; font-size:0.8rem; color:#558b2f; font-weight:600;">🗂️ Aplica para: alcances de consulta, derivaciones, comunicaciones técnicas internas, seguimiento de expedientes</div>
-      </div>
-    </div>
-
-    <!-- ===== POI 2026 ===== -->
-    <div class="section-title">
-      <span class="icon">📊</span> Plan Operativo Institucional (POI) 2026 – Tareas asignadas a la División
-    </div>
-
-    <div class="info-note" style="margin-bottom:16px;">
-      Las funciones de la División se materializan en actividades del POI 2026. En el período correspondiente a la Orden de Servicio N.° 008108-2026-MML-OGA-OL, se asistió técnico-profesionalmente en la elaboración de un total de <strong>54 informes técnicos</strong> generados por la División, distribuidos entre dos actividades del POI.
-    </div>
-
-    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:24px;">
-
-      <!-- Actividad 1235 -->
-      <div style="background:white; border-radius:12px; padding:20px 22px; box-shadow:var(--sombra); border-top:4px solid #2e7d46;">
-        <div style="font-size:0.78rem; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px;">Actividad POI</div>
-        <div style="font-size:1.25rem; font-weight:800; color:#1a5c2e; margin-bottom:6px;">Actividad 1235</div>
-        <div style="font-size:0.82rem; color:#555; margin-bottom:14px; line-height:1.5;">Supervisión ambiental de playas y evaluación técnica de áreas verdes — Ordenanza N.° 1850-2014-MML y N.° 1852-2014-MML</div>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="background:#e8f5ec; border-radius:6px; padding:4px 10px; font-size:0.78rem; font-weight:700; color:#1a5c2e; white-space:nowrap;">Tarea 3</div>
-            <div style="flex:1; background:#f0f0f0; border-radius:4px; height:14px; overflow:hidden;">
-              <div style="width:67%; height:100%; background:#2e7d46; border-radius:4px;"></div>
-            </div>
-            <div style="font-size:0.82rem; font-weight:700; color:#2e7d46; white-space:nowrap;">67% · ~36 inf.</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="background:#e8f5ec; border-radius:6px; padding:4px 10px; font-size:0.78rem; font-weight:700; color:#1a5c2e; white-space:nowrap;">Tarea 4</div>
-            <div style="flex:1; background:#f0f0f0; border-radius:4px; height:14px; overflow:hidden;">
-              <div style="width:15%; height:100%; background:#4caf6b; border-radius:4px;"></div>
-            </div>
-            <div style="font-size:0.82rem; font-weight:700; color:#4caf6b; white-space:nowrap;">15% · ~8 inf.</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="background:#e8f5ec; border-radius:6px; padding:4px 10px; font-size:0.78rem; font-weight:700; color:#1a5c2e; white-space:nowrap;">Tarea 5</div>
-            <div style="flex:1; background:#f0f0f0; border-radius:4px; height:14px; overflow:hidden;">
-              <div style="width:9%; height:100%; background:#81c784; border-radius:4px;"></div>
-            </div>
-            <div style="font-size:0.82rem; font-weight:700; color:#66bb6a; white-space:nowrap;">9% · ~5 inf.</div>
-          </div>
-        </div>
-        <div style="margin-top:12px; font-size:0.78rem; color:#888;">Subtotal: 91% del total de informes del período</div>
-      </div>
-
-      <!-- Actividad 1234 -->
-      <div style="background:white; border-radius:12px; padding:20px 22px; box-shadow:var(--sombra); border-top:4px solid #0277bd;">
-        <div style="font-size:0.78rem; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px;">Actividad POI</div>
-        <div style="font-size:1.25rem; font-weight:800; color:#0d47a1; margin-bottom:6px;">Actividad 1234</div>
-        <div style="font-size:0.82rem; color:#555; margin-bottom:14px; line-height:1.5;">Evaluación técnica de solicitudes de arboricultura y conservación de ecosistemas — Ordenanza N.° 1852-2014-MML y N.° 2427-2022-MML</div>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="background:#e3f0ff; border-radius:6px; padding:4px 10px; font-size:0.78rem; font-weight:700; color:#0d47a1; white-space:nowrap;">Tarea 2</div>
-            <div style="flex:1; background:#f0f0f0; border-radius:4px; height:14px; overflow:hidden;">
-              <div style="width:4%; height:100%; background:#1565c0; border-radius:4px;"></div>
-            </div>
-            <div style="font-size:0.82rem; font-weight:700; color:#1565c0; white-space:nowrap;">4% · ~2 inf.</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="background:#e3f0ff; border-radius:6px; padding:4px 10px; font-size:0.78rem; font-weight:700; color:#0d47a1; white-space:nowrap;">Tarea 3</div>
-            <div style="flex:1; background:#f0f0f0; border-radius:4px; height:14px; overflow:hidden;">
-              <div style="width:6%; height:100%; background:#1976d2; border-radius:4px;"></div>
-            </div>
-            <div style="font-size:0.82rem; font-weight:700; color:#1976d2; white-space:nowrap;">6% · ~3 inf.</div>
-          </div>
-        </div>
-        <div style="margin-top:12px; font-size:0.78rem; color:#888;">Subtotal: 10% del total de informes del período</div>
-      </div>
-
-    </div>
-
-    <!-- Resumen POI -->
-    <div style="background:linear-gradient(135deg,#1a5c2e,#2e7d46); border-radius:12px; padding:18px 24px; color:white; margin-bottom:24px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
-      <div style="text-align:center;">
-        <div style="font-size:2.2rem; font-weight:800; line-height:1;">54</div>
-        <div style="font-size:0.78rem; opacity:0.85;">Informes del período</div>
-      </div>
-      <div style="width:1px; height:40px; background:rgba(255,255,255,0.3);"></div>
-      <div style="text-align:center;">
-        <div style="font-size:2.2rem; font-weight:800; line-height:1;">2</div>
-        <div style="font-size:0.78rem; opacity:0.85;">Actividades POI 2026</div>
-      </div>
-      <div style="width:1px; height:40px; background:rgba(255,255,255,0.3);"></div>
-      <div style="text-align:center;">
-        <div style="font-size:2.2rem; font-weight:800; line-height:1;">5</div>
-        <div style="font-size:0.78rem; opacity:0.85;">Tareas POI asignadas</div>
-      </div>
-      <div style="width:1px; height:40px; background:rgba(255,255,255,0.3);"></div>
-      <div style="flex:1; min-width:200px;">
-        <div style="font-size:0.83rem; opacity:0.92; line-height:1.55;">Fuente: Entregable N.° 03-2026 · OS N.° 008108-2026-MML-OGA-OL · Período: 21 de abril – 18 de junio de 2026. La mayor carga (91%) corresponde a la Actividad 1235.</div>
-      </div>
-    </div>
-
-    <div class="footer">
-      Municipalidad Metropolitana de Lima · División de Áreas Verdes y Ecosistemas · ROF 2026 &nbsp;|&nbsp; Elaborado: Entregable N.° 03-2026 · OS N.° 008108-2026-MML-OGA-OL
+    <div class="informe-card" style="border-top: 4px solid #78909c;">
+      <div style="font-size:0.78rem; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Producto secundario</div>
+      <div style="font-size:1.1rem; font-weight:800; color:#37474f; margin-bottom:10px;">Informe Simple</div>
+      <ul style="padding-left:16px; font-size:0.83rem; color:#333; line-height:1.7;">
+        <li>Comunicaciones administrativas internas entre unidades orgánicas</li>
+        <li>Seguimiento y atención a expedientes y solicitudes de información</li>
+        <li>Reporte mensual de avance del POI y metas físicas</li>
+        <li>Requerimientos de bienes y conformidades de servicios</li>
+        <li>Coordinación con entidades externas (SERFOR, PNP, Ministerio Público)</li>
+      </ul>
     </div>
   </div>
 
-  <!-- ========== TAB: ORGANIGRAMA ========== -->
-  <div id="tab-organigrama" class="tab-content">
+  <!-- POI 2026 -->
+  <div class="section-title"><span class="icon">📊</span> Plan Operativo Institucional (POI) 2026 – Tareas asignadas a la División</div>
+  <div class="info-note" style="margin-bottom:16px;">
+    Las funciones de la División se materializan en las siguientes actividades y tareas del POI 2026, correspondientes al Centro de Costo 12010 – Gerencia de Servicios a la Ciudad y Gestión Ambiental (Unidad de Gestión 02: Servicios Municipales).
+  </div>
 
-    <div class="section-title">
-      <span class="icon">🏛️</span> Organigrama – Gerencia de Servicios a la Ciudad y Gestión Ambiental
-    </div>
+  <div class="poi-grid">
 
-    <div class="info-note">
-      La División de Áreas Verdes y Ecosistemas (⭐) forma parte de la <strong>Subgerencia de Gestión Ambiental</strong>, una de las dos subgerencias de la Gerencia de Servicios a la Ciudad y Gestión Ambiental. Bajo la Subgerencia de Gestión Ambiental se ubican tres (3) divisiones.
-    </div>
+    <!-- Actividad 1235 -->
+    <div class="poi-card" style="border-top: 4px solid var(--verde-medio);">
+      <div style="font-size:0.75rem; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px;">Actividad POI N.° 1235</div>
+      <div style="font-size:1.05rem; font-weight:800; color:var(--verde-oscuro); margin-bottom:16px; line-height:1.3;">GESTIÓN AMBIENTAL</div>
 
-    <!-- ORGANIGRAMA SVG -->
-    <div style="background:white; border-radius:14px; padding:32px 24px 24px; box-shadow:var(--sombra); margin-bottom:24px;">
-      <svg viewBox="0 0 1100 410" width="100%" xmlns="http://www.w3.org/2000/svg"
-           style="font-family:'Segoe UI',Arial,sans-serif; display:block;">
-        <defs>
-          <filter id="sh" x="-8%" y="-8%" width="116%" height="130%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000020"/>
-          </filter>
-        </defs>
+      <div class="tarea-item" style="background:#e8f5ec; border-left: 4px solid #2e7d46;">
+        <div class="tarea-num" style="color:#2e7d46;">Tarea 3</div>
+        <div class="tarea-nombre" style="color:#1a3a1a;">Supervisión, evaluación y control de la gestión de las áreas verdes en zonas de uso público de la Provincia de Lima</div>
+      </div>
 
-        <!-- ══════════ LÍNEAS CONECTORAS ══════════ -->
+      <div class="tarea-item" style="background:#e8f5ec; border-left: 4px solid #4caf6b;">
+        <div class="tarea-num" style="color:#2e7d46;">Tarea 4</div>
+        <div class="tarea-nombre" style="color:#1a3a1a;">Autorización de la tala, poda severa y/o traslado de los individuos arbóreos en áreas de uso público de la Provincia de Lima</div>
+      </div>
 
-        <!-- Gerencia → bifurcación nivel 1 (cx=550) -->
-        <line x1="550" y1="96" x2="550" y2="138" stroke="#9e9e9e" stroke-width="2"/>
-        <!-- Horizontal nivel 1 (Subg Amb cx=270 ↔ Subg Serv cx=830) -->
-        <line x1="270" y1="138" x2="830" y2="138" stroke="#9e9e9e" stroke-width="2"/>
-        <!-- Bajada → Subg Ambiental (cx=270) -->
-        <line x1="270" y1="138" x2="270" y2="158" stroke="#9e9e9e" stroke-width="2"/>
-        <!-- Bajada → Subg Servicios (cx=830) -->
-        <line x1="830" y1="138" x2="830" y2="158" stroke="#9e9e9e" stroke-width="2"/>
-
-        <!-- IZQUIERDA: Subg Ambiental → bifurcación nivel 2 -->
-        <line x1="270" y1="224" x2="270" y2="268" stroke="#9e9e9e" stroke-width="2"/>
-        <!-- Horizontal nivel 2 izquierda (Div AVE cx=98 ↔ Div EACC cx=442) -->
-        <line x1="98"  y1="268" x2="442" y2="268" stroke="#9e9e9e" stroke-width="2"/>
-        <!-- Bajadas divisiones izquierda -->
-        <line x1="98"  y1="268" x2="98"  y2="288" stroke="#9e9e9e" stroke-width="2"/>
-        <line x1="270" y1="268" x2="270" y2="288" stroke="#9e9e9e" stroke-width="2"/>
-        <line x1="442" y1="268" x2="442" y2="288" stroke="#9e9e9e" stroke-width="2"/>
-
-        <!-- DERECHA: Subg Servicios → bifurcación nivel 2 -->
-        <line x1="830" y1="224" x2="830" y2="268" stroke="#9e9e9e" stroke-width="2"/>
-        <!-- Horizontal nivel 2 derecha (Div 1 cx=630 ↔ Div 4 cx=1025) -->
-        <line x1="630" y1="268" x2="1025" y2="268" stroke="#9e9e9e" stroke-width="2"/>
-        <!-- Bajadas divisiones derecha -->
-        <line x1="630" y1="268" x2="630" y2="288" stroke="#9e9e9e" stroke-width="2"/>
-        <line x1="762" y1="268" x2="762" y2="288" stroke="#9e9e9e" stroke-width="2"/>
-        <line x1="895" y1="268" x2="895" y2="288" stroke="#9e9e9e" stroke-width="2"/>
-        <line x1="1025" y1="268" x2="1025" y2="288" stroke="#9e9e9e" stroke-width="2"/>
-
-        <!-- ══════════ NIVEL 0 – GERENCIA ══════════ -->
-        <rect x="50" y="20" width="1000" height="76" rx="10" fill="#1a5c2e" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="white" font-size="15" font-weight="700"
-              x="550" y="50">Gerencia de Servicios a la Ciudad y Gestión Ambiental</text>
-        <text text-anchor="middle" fill="white" font-size="11" opacity="0.85"
-              x="550" y="71">Órgano de Línea · Proceso Misional · Art. 116°, ROF 2026</text>
-        <text text-anchor="middle" fill="white" font-size="10" opacity="0.70"
-              x="550" y="88">Ord. N.° 2729-2025-MML, modificada por Ord. N.° 2813-2026</text>
-
-        <!-- ══════════ NIVEL 1 – SUBGERENCIAS ══════════ -->
-
-        <!-- Subgerencia de Gestión Ambiental (cx=270) -->
-        <rect x="70" y="158" width="400" height="66" rx="9" fill="#2e7d46" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="white" font-size="13" font-weight="700"
-              x="270" y="184">Subgerencia de Gestión Ambiental</text>
-        <text text-anchor="middle" fill="white" font-size="10" opacity="0.85"
-              x="270" y="200">Art. 119°-120°, ROF 2026</text>
-        <text text-anchor="middle" fill="white" font-size="10" opacity="0.75"
-              x="270" y="215">3 divisiones a cargo</text>
-
-        <!-- Subgerencia de Servicios a la Ciudad (cx=830) -->
-        <rect x="630" y="158" width="400" height="66" rx="9" fill="#2e7d46" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="white" font-size="13" font-weight="700"
-              x="830" y="184">Subgerencia de Servicios a la Ciudad</text>
-        <text text-anchor="middle" fill="white" font-size="10" opacity="0.85"
-              x="830" y="200">Art. 121°-122°, ROF 2026</text>
-        <text text-anchor="middle" fill="white" font-size="10" opacity="0.75"
-              x="830" y="215">4 divisiones a cargo</text>
-
-        <!-- ══════════ NIVEL 2 – DIVISIONES IZQUIERDA (Gestión Ambiental) ══════════ -->
-
-        <!-- Div Áreas Verdes y Ecosistemas (DESTACADA) cx=98 -->
-        <rect x="18" y="288" width="160" height="100" rx="8"
-              fill="#fff8e1" stroke="#f9a825" stroke-width="2.5" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="#5d4037" font-size="11" font-weight="700" x="98" y="312">División de Áreas</text>
-        <text text-anchor="middle" fill="#5d4037" font-size="11" font-weight="700" x="98" y="326">Verdes y Ecosistemas</text>
-        <text text-anchor="middle" fill="#e65100" font-size="10" font-weight="700" x="98" y="346">⭐ Unidad en foco</text>
-        <text text-anchor="middle" fill="#8d5524" font-size="9"   x="98" y="360">11 funciones ROF</text>
-        <text text-anchor="middle" fill="#8d5524" font-size="9"   x="98" y="374">Inf. Técnicos e Inf. Simples</text>
-
-        <!-- Div Residuos Sólidos y EDUCCA cx=270 -->
-        <rect x="190" y="288" width="160" height="100" rx="8"
-              fill="#e8f5ec" stroke="#4caf6b" stroke-width="2" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="#1a5c2e" font-size="11" font-weight="700" x="270" y="316">División de Residuos</text>
-        <text text-anchor="middle" fill="#1a5c2e" font-size="11" font-weight="700" x="270" y="330">Sólidos y EDUCCA</text>
-        <text text-anchor="middle" fill="#2e7d46" font-size="9"   x="270" y="360">Gestión de residuos</text>
-        <text text-anchor="middle" fill="#2e7d46" font-size="9"   x="270" y="373">y educación ambiental</text>
-
-        <!-- Div Estrategia Ambiental, CC y Calidad de Aire cx=442 -->
-        <rect x="362" y="288" width="160" height="100" rx="8"
-              fill="#e8f5ec" stroke="#4caf6b" stroke-width="2" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="#1a5c2e" font-size="10" font-weight="700" x="442" y="311">División de Estrategia</text>
-        <text text-anchor="middle" fill="#1a5c2e" font-size="10" font-weight="700" x="442" y="324">Ambiental, Cambio</text>
-        <text text-anchor="middle" fill="#1a5c2e" font-size="10" font-weight="700" x="442" y="337">Climático y Calidad</text>
-        <text text-anchor="middle" fill="#1a5c2e" font-size="10" font-weight="700" x="442" y="350">de Aire</text>
-        <text text-anchor="middle" fill="#2e7d46" font-size="9"   x="442" y="370">Estrategia y monitoreo</text>
-        <text text-anchor="middle" fill="#2e7d46" font-size="9"   x="442" y="382">ambiental</text>
-
-        <!-- ══════════ NIVEL 2 – DIVISIONES DERECHA (Servicios a la Ciudad) ══════════ -->
-
-        <!-- Div Mantenimiento de Áreas Verdes cx=630 -->
-        <rect x="570" y="288" width="120" height="100" rx="8"
-              fill="#e3f0ff" stroke="#1565c0" stroke-width="2" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="630" y="311">División de</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="630" y="324">Mantenimiento</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="630" y="337">de Áreas Verdes</text>
-        <text text-anchor="middle" fill="#1565c0" font-size="8.5" x="630" y="360">Parques y jardines</text>
-        <text text-anchor="middle" fill="#1565c0" font-size="8.5" x="630" y="372">Cercado de Lima</text>
-
-        <!-- Div Infraestructura y Mobiliario Urbano cx=762 -->
-        <rect x="702" y="288" width="120" height="100" rx="8"
-              fill="#e3f0ff" stroke="#1565c0" stroke-width="2" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="762" y="311">División de</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="762" y="324">Infraestructura</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="762" y="337">y Mobiliario</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="762" y="350">Urbano</text>
-        <text text-anchor="middle" fill="#1565c0" font-size="8.5" x="762" y="372">Mant. infraestructura</text>
-
-        <!-- Div Limpieza Pública cx=895 -->
-        <rect x="835" y="288" width="120" height="100" rx="8"
-              fill="#e3f0ff" stroke="#1565c0" stroke-width="2" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="895" y="318">División de</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="895" y="331">Limpieza</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="895" y="344">Pública</text>
-        <text text-anchor="middle" fill="#1565c0" font-size="8.5" x="895" y="367">Recolección y</text>
-        <text text-anchor="middle" fill="#1565c0" font-size="8.5" x="895" y="379">segregación RS</text>
-
-        <!-- Div Alumbrado Ornamental y Piletas cx=1025 -->
-        <rect x="965" y="288" width="120" height="100" rx="8"
-              fill="#e3f0ff" stroke="#1565c0" stroke-width="2" filter="url(#sh)"/>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="1025" y="311">División de</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="1025" y="324">Alumbrado</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="1025" y="337">Ornamental</text>
-        <text text-anchor="middle" fill="#0d47a1" font-size="10" font-weight="700" x="1025" y="350">y Piletas</text>
-        <text text-anchor="middle" fill="#1565c0" font-size="8.5" x="1025" y="372">Iluminación artística</text>
-        <text text-anchor="middle" fill="#1565c0" font-size="8.5" x="1025" y="384">y ornamental</text>
-
-      </svg>
-
-      <!-- LEYENDA -->
-      <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:18px; padding-top:14px; border-top:1px solid #e0e0e0; align-items:center;">
-        <span style="font-size:0.77rem; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:.04em;">Leyenda</span>
-        <div style="display:flex; align-items:center; gap:7px; font-size:0.79rem; color:#444;">
-          <div style="width:22px; height:14px; background:#1a5c2e; border-radius:3px;"></div> Gerencia
-        </div>
-        <div style="display:flex; align-items:center; gap:7px; font-size:0.79rem; color:#444;">
-          <div style="width:22px; height:14px; background:#2e7d46; border-radius:3px;"></div> Subgerencia
-        </div>
-        <div style="display:flex; align-items:center; gap:7px; font-size:0.79rem; color:#444;">
-          <div style="width:22px; height:14px; background:#e8f5ec; border:2px solid #4caf6b; border-radius:3px;"></div> División – Gestión Ambiental
-        </div>
-        <div style="display:flex; align-items:center; gap:7px; font-size:0.79rem; color:#444;">
-          <div style="width:22px; height:14px; background:#e3f0ff; border:2px solid #1565c0; border-radius:3px;"></div> División – Servicios a la Ciudad
-        </div>
-        <div style="display:flex; align-items:center; gap:7px; font-size:0.79rem; color:#444;">
-          <div style="width:22px; height:14px; background:#fff8e1; border:2.5px solid #f9a825; border-radius:3px;"></div> ⭐ División de Áreas Verdes y Ecosistemas (unidad en foco)
-        </div>
+      <div class="tarea-item" style="background:#e8f5ec; border-left: 4px solid #81c784;">
+        <div class="tarea-num" style="color:#2e7d46;">Tarea 5</div>
+        <div class="tarea-nombre" style="color:#1a3a1a;">Supervisión, evaluación y control ambiental de las playas del litoral de la Provincia de Lima</div>
       </div>
     </div>
 
-    <!-- Tabla dependencia jerárquica -->
-    <div class="section-title" style="margin-top:4px;">
-      <span class="icon">📌</span> Dependencia jerárquica de la División
-    </div>
-    <div style="background:white; border-radius:12px; padding:20px 24px; box-shadow:var(--sombra); margin-bottom:28px;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
-        <thead>
-          <tr style="background:var(--verde-suave);">
-            <th style="padding:10px 14px; text-align:left; color:var(--verde-oscuro); width:130px;">Nivel</th>
-            <th style="padding:10px 14px; text-align:left; color:var(--verde-oscuro);">Unidad orgánica</th>
-            <th style="padding:10px 14px; text-align:left; color:var(--verde-oscuro);">Referencia ROF 2026</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid #f0f0f0;">
-            <td style="padding:10px 14px; font-weight:600; color:#555;">Gerencia</td>
-            <td style="padding:10px 14px;">Gerencia de Servicios a la Ciudad y Gestión Ambiental</td>
-            <td style="padding:10px 14px; color:#777;">Art. 116° – Órgano de Línea · Proceso Misional</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;">
-            <td style="padding:10px 14px; font-weight:600; color:#555;">Subgerencia</td>
-            <td style="padding:10px 14px;">Subgerencia de Gestión Ambiental</td>
-            <td style="padding:10px 14px; color:#777;">Art. 119°-120° – Depende del Gerente de Servicios a la Ciudad</td>
-          </tr>
-          <tr style="background:#fffde7;">
-            <td style="padding:10px 14px; font-weight:700; color:var(--verde-oscuro);">División ⭐</td>
-            <td style="padding:10px 14px; font-weight:700; color:var(--verde-oscuro);">División de Áreas Verdes y Ecosistemas</td>
-            <td style="padding:10px 14px; color:#7b5000;">Ord. N.° 2813-2026 · 11 funciones ROF 2026</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Actividad 1234 -->
+    <div class="poi-card" style="border-top: 4px solid #0277bd;">
+      <div style="font-size:0.75rem; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px;">Actividad POI N.° 1234</div>
+      <div style="font-size:1.05rem; font-weight:800; color:#0d47a1; margin-bottom:16px; line-height:1.3;">GESTIÓN DE ESTRATEGIAS PARA CAMBIO CLIMÁTICO</div>
+
+      <div class="tarea-item" style="background:#e3f0ff; border-left: 4px solid #1565c0;">
+        <div class="tarea-num" style="color:#0d47a1;">Tarea 2</div>
+        <div class="tarea-nombre" style="color:#0a1a3a;">Gestión de recursos hídricos</div>
+      </div>
+
+      <div class="tarea-item" style="background:#e3f0ff; border-left: 4px solid #1976d2;">
+        <div class="tarea-num" style="color:#0d47a1;">Tarea 3</div>
+        <div class="tarea-nombre" style="color:#0a1a3a;">Gestión de la conservación de áreas verdes y ecosistemas</div>
+      </div>
     </div>
 
-    <div class="footer">
-      Municipalidad Metropolitana de Lima · Gerencia de Servicios a la Ciudad y Gestión Ambiental · Estructura según ROF 2026
+  </div>
+
+  <!-- Resumen POI -->
+  <div style="background:linear-gradient(135deg,#1a5c2e,#2e7d46); border-radius:12px; padding:18px 24px; color:white; margin-bottom:24px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+    <div style="text-align:center;">
+      <div style="font-size:2.2rem; font-weight:800; line-height:1;">2</div>
+      <div style="font-size:0.78rem; opacity:0.85;">Actividades POI 2026</div>
+    </div>
+    <div style="width:1px; height:40px; background:rgba(255,255,255,0.3);"></div>
+    <div style="text-align:center;">
+      <div style="font-size:2.2rem; font-weight:800; line-height:1;">5</div>
+      <div style="font-size:0.78rem; opacity:0.85;">Tareas POI asignadas</div>
+    </div>
+    <div style="width:1px; height:40px; background:rgba(255,255,255,0.3);"></div>
+    <div style="flex:1; min-width:200px;">
+      <div style="font-size:0.83rem; opacity:0.92; line-height:1.55;">Fuente: POI 2026 · Unidad de Gestión 02: Servicios Municipales · Centro de Costo 12010 – Gerencia de Servicios a la Ciudad y Gestión Ambiental</div>
     </div>
   </div>
 
-  <!-- ========== TAB: COMPETENCIAS ========== -->
-  <div id="tab-competencias" class="tab-content">
+  <div class="footer">Municipalidad Metropolitana de Lima · División de Áreas Verdes y Ecosistemas · ROF 2026 &nbsp;|&nbsp; Elaborado: Entregable N.° 03-2026 · OS N.° 008108-2026-MML-OGA-OL</div>
+</div>
 
-    <div class="section-title">
-      <span class="icon">🎯</span> Ámbitos de Competencia
-    </div>
+<!-- ========== TAB: ORGANIGRAMA ========== -->
+<div id="tab-organigrama" class="tab-content">
+  <div class="section-title"><span class="icon">🏛️</span> Organigrama – Gerencia de Servicios a la Ciudad y Gestión Ambiental</div>
 
-    <div class="info-note">
-      De acuerdo al ROF 2026, la División de Áreas Verdes y Ecosistemas ejerce competencia en la <strong>provincia de Lima</strong> en los siguientes ámbitos temáticos:
-    </div>
-
-    <div class="competencias-row" style="grid-template-columns: repeat(2,1fr); gap:16px; margin-bottom:24px;">
-
-      <div class="comp-card" style="text-align:left; padding:22px 24px; border-top:4px solid var(--verde-medio);">
-        <div class="comp-icon">🌿</div>
-        <div class="comp-title" style="font-size:1rem; margin-bottom:8px;">Supervisión ambiental de áreas verdes públicas</div>
-        <p style="font-size:0.82rem; color:#555; line-height:1.6;">
-          Supervisión de los Planes de Manejo de Áreas Verdes distritales, formulación del Plan Metropolitano de Áreas Verdes, autorización de tala y poda de arbolado urbano, y reconocimiento de árboles patrimoniales y áreas de reserva ambiental.
-        </p>
-      </div>
-
-      <div class="comp-card" style="text-align:left; padding:22px 24px; border-top:4px solid #0277bd;">
-        <div class="comp-icon">🌊</div>
-        <div class="comp-title" style="font-size:1rem; margin-bottom:8px;">Gestión ambiental de ecosistemas frágiles</div>
-        <p style="font-size:0.82rem; color:#555; line-height:1.6;">
-          Supervisión y evaluación ambiental de los ecosistemas frágiles de Lima y sus recursos naturales. Coordinación con entidades competentes para su protección. Incluye ecosistemas marino costeros, lomas costeras y otros ecosistemas de la provincia.
-        </p>
-      </div>
-
-      <div class="comp-card" style="text-align:left; padding:22px 24px; border-top:4px solid #00838f;">
-        <div class="comp-icon">🏖️</div>
-        <div class="comp-title" style="font-size:1rem; margin-bottom:8px;">Supervisión ambiental de playas del litoral costero</div>
-        <p style="font-size:0.82rem; color:#555; line-height:1.6;">
-          Evaluación y vigilancia de la gestión ambiental integral de las playas del litoral de la provincia de Lima. Coordinación con municipalidades distritales costeras y entidades del sector público para su protección y conservación.
-        </p>
-      </div>
-
-      <div class="comp-card" style="text-align:left; padding:22px 24px; border-top:4px solid #558b2f;">
-        <div class="comp-icon">💧</div>
-        <div class="comp-title" style="font-size:1rem; margin-bottom:8px;">Gestión de cuencas hídricas y aguas residuales</div>
-        <p style="font-size:0.82rem; color:#555; line-height:1.6;">
-          Diseño y promoción de iniciativas y proyectos sobre el uso de aguas residuales tratadas para el riego de áreas verdes en la provincia de Lima. Coordinación sobre las cuencas Lurín, Chillón y Rímac dentro de la jurisdicción provincial.
-        </p>
-      </div>
-    </div>
-
-    <!-- Tabla de funciones vs ámbito -->
-    <div class="section-title">
-      <span class="icon">🔗</span> Relación funciones – ámbito de competencia
-    </div>
-    <div style="background:white; border-radius:12px; padding:20px 24px; box-shadow:var(--sombra); margin-bottom:28px; overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.81rem; min-width:550px;">
-        <thead>
-          <tr style="background:var(--verde-suave);">
-            <th style="padding:9px 12px; text-align:left; color:var(--verde-oscuro); width:45px;">#</th>
-            <th style="padding:9px 12px; text-align:left; color:var(--verde-oscuro);">Función</th>
-            <th style="padding:9px 12px; text-align:left; color:var(--verde-oscuro);">Ámbito</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:9px 12px; color:#888;">1</td><td style="padding:9px 12px;">Gestión ambiental de playas y zonas marino costeras</td><td style="padding:9px 12px;"><span class="funcion-tag azul" style="margin:0;">🏖️ Litoral costero</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;"><td style="padding:9px 12px; color:#888;">2</td><td style="padding:9px 12px;">Opinión técnica ambiental a iniciativas</td><td style="padding:9px 12px;"><span class="funcion-tag azul" style="margin:0;">📝 Evaluación técnica</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:9px 12px; color:#888;">3</td><td style="padding:9px 12px;">Sistema de Denuncias Ambientales</td><td style="padding:9px 12px;"><span class="funcion-tag naranja" style="margin:0;">⚠️ Control ambiental</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;"><td style="padding:9px 12px; color:#888;">4</td><td style="padding:9px 12px;">Autorización de tala, poda y traslado arbóreo</td><td style="padding:9px 12px;"><span class="funcion-tag" style="margin:0;">🌳 Áreas verdes</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:9px 12px; color:#888;">5</td><td style="padding:9px 12px;">Planes de Manejo de Áreas Verdes distritales</td><td style="padding:9px 12px;"><span class="funcion-tag" style="margin:0;">🗺️ Áreas verdes</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;"><td style="padding:9px 12px; color:#888;">6</td><td style="padding:9px 12px;">Áreas de reserva ambiental y árboles patrimoniales</td><td style="padding:9px 12px;"><span class="funcion-tag" style="margin:0;">🏞️ Ecosistemas</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:9px 12px; color:#888;">7</td><td style="padding:9px 12px;">Aguas residuales tratadas para riego</td><td style="padding:9px 12px;"><span class="funcion-tag azul" style="margin:0;">💧 Gestión hídrica</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;"><td style="padding:9px 12px; color:#888;">8</td><td style="padding:9px 12px;">Instrumentos de gestión ambiental provincial</td><td style="padding:9px 12px;"><span class="funcion-tag" style="margin:0;">📊 Planificación</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0;"><td style="padding:9px 12px; color:#888;">9</td><td style="padding:9px 12px;">Supervisión de ecosistemas frágiles</td><td style="padding:9px 12px;"><span class="funcion-tag naranja" style="margin:0;">🌱 Ecosistemas</span></td></tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;"><td style="padding:9px 12px; color:#888;">10</td><td style="padding:9px 12px;">Propuesta de normas institucionales</td><td style="padding:9px 12px;"><span class="funcion-tag azul" style="margin:0;">⚖️ Normativa</span></td></tr>
-          <tr><td style="padding:9px 12px; color:#888;">11</td><td style="padding:9px 12px;">Evaluación técnica de cambios de zonificación</td><td style="padding:9px 12px;"><span class="funcion-tag naranja" style="margin:0;">🏙️ Zonificación</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="footer">
-      Municipalidad Metropolitana de Lima · División de Áreas Verdes y Ecosistemas · ROF 2026
-    </div>
+  <div class="leyenda">
+    <div class="ley-item"><div class="ley-box" style="background:#1a5c2e; border-color:#1a5c2e;"></div> Gerencia</div>
+    <div class="ley-item"><div class="ley-box" style="background:#2e7d46; border-color:#2e7d46;"></div> Subgerencia</div>
+    <div class="ley-item"><div class="ley-box" style="background:#e8f5ec; border-color:#4caf6b;"></div> División – Gestión Ambiental</div>
+    <div class="ley-item"><div class="ley-box" style="background:#fff8e1; border-color:#f9a825;"></div> División de Áreas Verdes y Ecosistemas (esta División)</div>
+    <div class="ley-item"><div class="ley-box" style="background:#e3f0ff; border-color:#1565c0;"></div> División – Servicios a la Ciudad</div>
   </div>
 
-  <!-- ========== TAB: ORDENANZAS ========== -->
-  <div id="tab-ordenanzas" class="tab-content">
+  <div style="overflow-x:auto;">
+  <svg viewBox="0 0 1100 440" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block; min-width:700px; font-family:Segoe UI,Arial,sans-serif;">
 
-    <div class="section-title">
-      <span class="icon">⚖️</span> Ordenanzas clave de la Municipalidad Metropolitana de Lima
-    </div>
+    <!-- GERENCIA -->
+    <rect x="50" y="20" width="1000" height="76" rx="8" fill="#1a5c2e"/>
+    <text x="550" y="52" text-anchor="middle" fill="white" font-size="13" font-weight="700">GERENCIA DE SERVICIOS A LA CIUDAD Y GESTIÓN AMBIENTAL</text>
+    <text x="550" y="72" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="10">(TUO ROF MML – Arts. 117–118 · Ord. N.° 2813-2026-MML)</text>
+    <text x="550" y="88" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Centro de Costo 12010</text>
 
-    <div class="info-note">
-      Ambas ordenanzas constituyen el marco normativo específico que sustenta las funciones de la División de Áreas Verdes y Ecosistemas. Se presentan los artículos más relevantes donde la <strong>Municipalidad Metropolitana de Lima</strong> ejerce funciones de rectoría, autorización, supervisión y control.
-    </div>
+    <!-- CONECTOR: Gerencia → horizontal -->
+    <line x1="550" y1="96" x2="550" y2="138" stroke="#888" stroke-width="2"/>
+    <line x1="270" y1="138" x2="830" y2="138" stroke="#888" stroke-width="2"/>
 
-    <!-- ===== ORDENANZA 1850-2014 ===== -->
-    <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px; margin-top:4px;">
-      <div style="background:#0277bd; color:white; border-radius:10px; padding:10px 18px; font-size:0.95rem; font-weight:700; white-space:nowrap;">
-        🏖️ Ord. N.° 1850-2014
-      </div>
-      <div style="font-size:0.92rem; color:#444; font-weight:500;">
-        Ordenanza para la Gestión Ambiental Integral de las Playas del Litoral de la Provincia de Lima
-      </div>
-    </div>
+    <!-- SUBGERENCIA GESTIÓN AMBIENTAL (izquierda) -->
+    <line x1="270" y1="138" x2="270" y2="158" stroke="#888" stroke-width="2"/>
+    <rect x="70" y="158" width="400" height="76" rx="8" fill="#2e7d46"/>
+    <text x="270" y="191" text-anchor="middle" fill="white" font-size="11.5" font-weight="700">SUBGERENCIA DE GESTIÓN AMBIENTAL</text>
+    <text x="270" y="208" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9.5">Arts. 119–120 · TUO ROF MML</text>
+    <text x="270" y="224" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Ingeniero(a) de Gestión Ambiental</text>
 
-    <div class="funciones-grid" style="margin-bottom:32px;">
+    <!-- SUBGERENCIA SERVICIOS A LA CIUDAD (derecha) -->
+    <line x1="830" y1="138" x2="830" y2="158" stroke="#888" stroke-width="2"/>
+    <rect x="630" y="158" width="400" height="76" rx="8" fill="#2e7d46"/>
+    <text x="830" y="191" text-anchor="middle" fill="white" font-size="11.5" font-weight="700">SUBGERENCIA DE SERVICIOS A LA CIUDAD</text>
+    <text x="830" y="208" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-size="9.5">Arts. 121–122 · TUO ROF MML</text>
+    <text x="830" y="224" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Servicios municipales urbanos</text>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">1°</div>
-        <div class="funcion-body">
-          <h3>Objeto de la Ordenanza</h3>
-          <p>Establece disposiciones para la gestión ambiental integral de las playas del litoral de la provincia de Lima, a fin de asegurar su conservación, prevenir su contaminación y degradación, garantizar su naturaleza de espacio público y la prestación de servicios en condiciones de seguridad, higiene y salubridad.</p>
-          <span class="funcion-tag azul">Art. 1° – Objeto</span>
-        </div>
-      </div>
+    <!-- CONECTORES SUBG AMBIENTAL → DIVISIONES -->
+    <line x1="270" y1="234" x2="270" y2="278" stroke="#888" stroke-width="1.5"/>
+    <line x1="98" y1="278" x2="442" y2="278" stroke="#888" stroke-width="1.5"/>
+    <line x1="98" y1="278" x2="98" y2="288" stroke="#888" stroke-width="1.5"/>
+    <line x1="270" y1="278" x2="270" y2="288" stroke="#888" stroke-width="1.5"/>
+    <line x1="442" y1="278" x2="442" y2="288" stroke="#888" stroke-width="1.5"/>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">3°</div>
-        <div class="funcion-body">
-          <h3>MML como autoridad competente</h3>
-          <p>La Municipalidad Metropolitana de Lima como <strong>órgano rector del Sistema Metropolitano de Gestión Ambiental</strong> de la provincia de Lima, es la autoridad competente para aprobar normas que regulen la preservación, protección y control de las playas del litoral de la provincia de Lima.</p>
-          <span class="funcion-tag azul">Art. 3° – Autoridad competente</span>
-        </div>
-      </div>
+    <!-- DIV ÁREAS VERDES Y ECOSISTEMAS (destacada) -->
+    <rect x="18" y="288" width="160" height="110" rx="7" fill="#fff8e1" stroke="#f9a825" stroke-width="2.5"/>
+    <rect x="18" y="288" width="160" height="18" rx="7" fill="#f9a825"/>
+    <rect x="18" y="298" width="160" height="8" fill="#f9a825"/>
+    <text x="98" y="300" text-anchor="middle" fill="white" font-size="8.5" font-weight="800">▶ ESTA DIVISIÓN</text>
+    <text x="98" y="319" text-anchor="middle" fill="#5d3a00" font-size="9.5" font-weight="700">División de Áreas</text>
+    <text x="98" y="333" text-anchor="middle" fill="#5d3a00" font-size="9.5" font-weight="700">Verdes y Ecosistemas</text>
+    <text x="98" y="349" text-anchor="middle" fill="#7a5000" font-size="8.5">Art. 120° · ROF</text>
+    <text x="98" y="363" text-anchor="middle" fill="#7a5000" font-size="8">Ingeniero Forestal</text>
+    <text x="98" y="377" text-anchor="middle" fill="#7a5000" font-size="8">CIP N.° 212204</text>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">4°</div>
-        <div class="funcion-body">
-          <h3>Gestión ambiental integral de las playas</h3>
-          <p>La gestión ambiental integral de las playas es la acción directriz y coordinada de la MML con las Municipalidades Distritales que tengan litoral, enmarcada en los principios del Sistema Metropolitano de Gestión Ambiental y los lineamientos de la Política Metropolitana del Ambiente.</p>
-          <span class="funcion-tag azul">Art. 4° – Gestión integral</span>
-        </div>
-      </div>
+    <!-- DIV RESIDUOS SÓLIDOS Y EDUCCA -->
+    <rect x="190" y="288" width="160" height="110" rx="7" fill="#e8f5ec" stroke="#4caf6b" stroke-width="1.5"/>
+    <text x="270" y="318" text-anchor="middle" fill="#1a5c2e" font-size="9.5" font-weight="700">División de Residuos</text>
+    <text x="270" y="332" text-anchor="middle" fill="#1a5c2e" font-size="9.5" font-weight="700">Sólidos y EDUCCA</text>
+    <text x="270" y="352" text-anchor="middle" fill="#2e7d46" font-size="8.5">Gestión de residuos y</text>
+    <text x="270" y="364" text-anchor="middle" fill="#2e7d46" font-size="8.5">educación ambiental</text>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">22°</div>
-        <div class="funcion-body">
-          <h3>Habilitación de playas — facultad de la MML</h3>
-          <p>La declaratoria de habilidad de una playa se realiza mediante <strong>resolución de la Gerencia del Ambiente de la Municipalidad Metropolitana de Lima</strong>, a solicitud de la respectiva Municipalidad Distrital. Dicha resolución tiene vigencia de un (1) año.</p>
-          <span class="funcion-tag azul">Art. 22° – Habilitación</span>
-        </div>
-      </div>
+    <!-- DIV ESTRATEGIA AMBIENTAL Y CAMBIO CLIMÁTICO -->
+    <rect x="362" y="288" width="160" height="110" rx="7" fill="#e8f5ec" stroke="#4caf6b" stroke-width="1.5"/>
+    <text x="442" y="316" text-anchor="middle" fill="#1a5c2e" font-size="9.5" font-weight="700">División de Estrategia</text>
+    <text x="442" y="330" text-anchor="middle" fill="#1a5c2e" font-size="9.5" font-weight="700">Ambiental y Cambio</text>
+    <text x="442" y="344" text-anchor="middle" fill="#1a5c2e" font-size="9.5" font-weight="700">Climático y Calidad de Aire</text>
+    <text x="442" y="362" text-anchor="middle" fill="#2e7d46" font-size="8.5">Planificación ambiental</text>
+    <text x="442" y="374" text-anchor="middle" fill="#2e7d46" font-size="8.5">y cambio climático</text>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">24°</div>
-        <div class="funcion-body">
-          <h3>Evaluación técnica de habilitación</h3>
-          <p>La <strong>Subgerencia de Evaluación y Calidad Ambiental de la Gerencia del Ambiente de la MML</strong> realiza la evaluación del cumplimiento de requisitos para la habilitación de playas, emitiendo el informe técnico correspondiente que sustenta la resolución de declaratoria.</p>
-          <span class="funcion-tag azul">Art. 24° – Informe técnico</span>
-        </div>
-      </div>
+    <!-- CONECTORES SUBG SERVICIOS → DIVISIONES -->
+    <line x1="830" y1="234" x2="830" y2="278" stroke="#888" stroke-width="1.5"/>
+    <line x1="632" y1="278" x2="1028" y2="278" stroke="#888" stroke-width="1.5"/>
+    <line x1="632" y1="278" x2="632" y2="288" stroke="#888" stroke-width="1.5"/>
+    <line x1="764" y1="278" x2="764" y2="288" stroke="#888" stroke-width="1.5"/>
+    <line x1="896" y1="278" x2="896" y2="288" stroke="#888" stroke-width="1.5"/>
+    <line x1="1028" y1="278" x2="1028" y2="288" stroke="#888" stroke-width="1.5"/>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">35°</div>
-        <div class="funcion-body">
-          <h3>Supervisión y control ambiental de playas</h3>
-          <p>La <strong>Subgerencia de Evaluación y Calidad Ambiental</strong> es competente para realizar la <strong>evaluación y supervisión ambiental</strong> de las playas del litoral de la provincia de Lima. Las acciones de fiscalización son efectuadas por la Gerencia de Fiscalización y Control en coordinación con dicha Subgerencia.</p>
-          <span class="funcion-tag azul">Art. 35° – Autoridad supervisora</span>
-        </div>
-      </div>
+    <!-- DIV MANTENIMIENTO DE ÁREAS VERDES -->
+    <rect x="572" y="288" width="120" height="110" rx="7" fill="#e3f0ff" stroke="#1565c0" stroke-width="1.5"/>
+    <text x="632" y="316" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">División de</text>
+    <text x="632" y="329" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">Mantenimiento</text>
+    <text x="632" y="342" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">de Áreas Verdes</text>
+    <text x="632" y="360" text-anchor="middle" fill="#1565c0" font-size="8">Gestión de</text>
+    <text x="632" y="372" text-anchor="middle" fill="#1565c0" font-size="8">parques y jardines</text>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">38°</div>
-        <div class="funcion-body">
-          <h3>Evaluación ambiental en zonas con fauna silvestre</h3>
-          <p>Las solicitudes de habilitación de playas en zonas donde exista fauna silvestre deberán contar con la <strong>Evaluación Ambiental de la Subgerencia de Evaluación y Calidad Ambiental</strong>, la que incluirá el tratamiento y cuidado de dichas especies, conforme a la normativa vigente.</p>
-          <span class="funcion-tag azul">Art. 38° – Obligaciones</span>
-        </div>
-      </div>
+    <!-- DIV INFRAESTRUCTURA Y MOBILIARIO URBANO -->
+    <rect x="704" y="288" width="120" height="110" rx="7" fill="#e3f0ff" stroke="#1565c0" stroke-width="1.5"/>
+    <text x="764" y="316" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">División de</text>
+    <text x="764" y="329" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">Infraestructura y</text>
+    <text x="764" y="342" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">Mobiliario Urbano</text>
+    <text x="764" y="360" text-anchor="middle" fill="#1565c0" font-size="8">Obras e instalaciones</text>
+    <text x="764" y="372" text-anchor="middle" fill="#1565c0" font-size="8">urbanas</text>
 
-      <div class="funcion-card" style="border-left:4px solid #0277bd;">
-        <div class="funcion-num" style="background:#0277bd;">40°</div>
-        <div class="funcion-body">
-          <h3>Infracciones y sanciones a municipalidades distritales</h3>
-          <p>El incumplimiento de las disposiciones acarrea la aplicación de sanciones a las municipalidades distritales. La <strong>Resolución de Sanción es emitida por la Gerencia de Fiscalización y Control de la MML</strong> y publicada en los paneles informativos de la playa sancionada, comunicándose además al INDECOPI.</p>
-          <span class="funcion-tag naranja">Art. 40° – Sanciones</span>
-        </div>
-      </div>
+    <!-- DIV LIMPIEZA PÚBLICA -->
+    <rect x="836" y="288" width="120" height="110" rx="7" fill="#e3f0ff" stroke="#1565c0" stroke-width="1.5"/>
+    <text x="896" y="322" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">División de</text>
+    <text x="896" y="336" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">Limpieza Pública</text>
+    <text x="896" y="356" text-anchor="middle" fill="#1565c0" font-size="8">Gestión de</text>
+    <text x="896" y="368" text-anchor="middle" fill="#1565c0" font-size="8">residuos urbanos</text>
 
-    </div>
+    <!-- DIV ALUMBRADO ORNAMENTAL Y PILETAS -->
+    <rect x="968" y="288" width="120" height="110" rx="7" fill="#e3f0ff" stroke="#1565c0" stroke-width="1.5"/>
+    <text x="1028" y="314" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">División de</text>
+    <text x="1028" y="327" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">Alumbrado</text>
+    <text x="1028" y="340" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">Ornamental</text>
+    <text x="1028" y="353" text-anchor="middle" fill="#0d47a1" font-size="9" font-weight="700">y Piletas</text>
+    <text x="1028" y="370" text-anchor="middle" fill="#1565c0" font-size="8">Iluminación y</text>
+    <text x="1028" y="382" text-anchor="middle" fill="#1565c0" font-size="8">fuentes ornamentales</text>
 
-    <!-- ===== ORDENANZA 1852-2014 ===== -->
-    <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px; margin-top:4px;">
-      <div style="background:#2e7d32; color:white; border-radius:10px; padding:10px 18px; font-size:0.95rem; font-weight:700; white-space:nowrap;">
-        🌿 Ord. N.° 1852-2014
-      </div>
-      <div style="font-size:0.92rem; color:#444; font-weight:500;">
-        Ordenanza para la Conservación y Gestión de Áreas Verdes en la Provincia de Lima
-      </div>
-    </div>
-
-    <div class="funciones-grid" style="margin-bottom:32px;">
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">1°</div>
-        <div class="funcion-body">
-          <h3>Objeto: marco normativo de áreas verdes</h3>
-          <p>Establece el marco normativo y lineamientos generales para la gestión de áreas verdes de la provincia de Lima, contribuyendo con la creación, conservación, protección, valoración, manejo, mantenimiento y sostenibilidad de las áreas verdes como elementos esenciales para la calidad de vida y el ambiente.</p>
-          <span class="funcion-tag">Art. 1° – Objeto</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">11°</div>
-        <div class="funcion-body">
-          <h3>Competencias metropolitanas: Gerencia del Ambiente como órgano rector</h3>
-          <p>Las competencias en materia de áreas verdes son desarrolladas por la <strong>Gerencia del Ambiente</strong> en su condición de <strong>órgano ejecutivo, supervisor y fiscalizador</strong> del Sistema Metropolitano de Gestión Ambiental. Las tareas de fiscalización se desarrollan mediante la emisión de <strong>informes técnicos</strong> que sustenten las intervenciones y acciones de la Gerencia de Fiscalización y Control.</p>
-          <span class="funcion-tag">Art. 11° – Competencias MML</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">15°</div>
-        <div class="funcion-body">
-          <h3>Plan Metropolitano de Áreas Verdes</h3>
-          <p>La <strong>Gerencia del Ambiente</strong> es el órgano encargado de elaborar el <strong>Plan Metropolitano de Áreas Verdes</strong>, instrumento directriz para la planificación de la creación, conservación, protección y gestión de las áreas verdes de la ciudad con horizonte de 10 años. Su uso es obligatorio para todas las entidades competentes. El Planeamiento Operativo debe contemplar las actividades previstas en dicho Plan.</p>
-          <span class="funcion-tag">Art. 15° – Plan Metropolitano</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">16°</div>
-        <div class="funcion-body">
-          <h3>Inventario Metropolitano de Áreas Verdes</h3>
-          <p>La <strong>Gerencia del Ambiente</strong> debe elaborar y mantener actualizado el Inventario Metropolitano de Áreas Verdes, con actualización cada 3 años. Las municipalidades distritales remiten sus inventarios para ser incorporados en el inventario metropolitan a través del Sistema de Información Geográfico - SIG.</p>
-          <span class="funcion-tag">Art. 16° – Inventario Metropolitano</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">21°</div>
-        <div class="funcion-body">
-          <h3>Protección de áreas verdes: opinión favorable de la MML</h3>
-          <p>Toda obra para habilitar infraestructura o equipamiento en áreas verdes de uso público debe seguir el procedimiento de <strong>opinión favorable de la Gerencia del Ambiente</strong>. La MML puede llevar a cabo supervisiones inopinadas. Cualquier afectación de zonificación o régimen de uso requiere <strong>opinión ambiental favorable</strong> de la Gerencia del Ambiente.</p>
-          <span class="funcion-tag">Art. 21° – Protección de áreas verdes</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">22°</div>
-        <div class="funcion-body">
-          <h3>Autorización de tala, poda severa y traslado arbóreo</h3>
-          <p>La <strong>Gerencia del Ambiente de la MML</strong> es la encargada de <strong>expedir la resolución que autoriza la tala, poda severa o traslado de especies arbóreas</strong> en todo el ámbito de la provincia de Lima, previa evaluación. Asimismo, supervisa el cumplimiento de los tratamientos autorizados y las compensaciones respectivas.</p>
-          <span class="funcion-tag naranja">Art. 22° – Autorización arbórea</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">25°</div>
-        <div class="funcion-body">
-          <h3>Tala y/o poda severa: prohibición y excepciones</h3>
-          <p>La tala y/o poda severa en espacios públicos está <strong>prohibida</strong>, salvo excepciones (riesgo evidente de caída, especie muerta). Las acciones de emergencia fuera del Plan deben estar avaladas por un <strong>Informe Técnico de Riesgo (ITR)</strong> elaborado por profesional calificado, a ser evaluado por la Subgerencia de Evaluación y Calidad Ambiental de la Gerencia del Ambiente.</p>
-          <span class="funcion-tag naranja">Art. 25° – Tala y poda severa</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">35°</div>
-        <div class="funcion-body">
-          <h3>Riesgos del arbolado urbano: Informe Técnico de Riesgo (ITR)</h3>
-          <p>En emergencias por riesgo muy alto de caída de arbolado, las entidades pueden ejecutar la tala inmediata, pero deben presentar un <strong>Informe Técnico de Riesgo (ITR)</strong> a la MML en un plazo de <strong>cinco (5) días hábiles</strong> para ser evaluado por la Subgerencia de Evaluación y Calidad Ambiental, quien adoptará las acciones administrativas o legales que correspondan.</p>
-          <span class="funcion-tag naranja">Art. 35° – Riesgos arbolado</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ===== ORDENANZA 2427-2022 ===== -->
-    <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px;">
-      <div style="background:#2e7d32; color:white; border-radius:10px; padding:10px 18px; font-size:0.95rem; font-weight:700; white-space:nowrap;">
-        🌿 Ord. N.° 2427-2022
-      </div>
-      <div style="font-size:0.92rem; color:#444; font-weight:500;">
-        Ordenanza que Establece Medidas para el Fortalecimiento de la Conservación de los Ecosistemas de la Provincia de Lima
-      </div>
-    </div>
-
-    <div class="funciones-grid" style="margin-bottom:32px;">
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">1°</div>
-        <div class="funcion-body">
-          <h3>Objeto: integración MML – Municipalidades distritales</h3>
-          <p>Establece medidas de integración y articulación entre la MML y las municipalidades distritales, dirigidas a promover el <strong>fortalecimiento de la conservación, protección y aprovechamiento sostenible de los ecosistemas</strong> en la provincia de Lima, manteniendo su diversidad biológica y los servicios ecosistémicos.</p>
-          <span class="funcion-tag">Art. 1° – Objeto y finalidad</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">3°</div>
-        <div class="funcion-body">
-          <h3>Ecosistemas presentes en la provincia de Lima</h3>
-          <p>Identifica los ecosistemas sujetos a protección: <strong>Desierto costero, Humedal costero, Loma costera, Matorral andino y Río</strong>. Las áreas verdes se rigen por la Ordenanza N.° 1852. Base: Mapa Nacional de Ecosistemas aprobado por RM N.° 440-2018-MINAM.</p>
-          <span class="funcion-tag">Art. 3° – Ecosistemas</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">4°</div>
-        <div class="funcion-body">
-          <h3>Medidas de conservación de ecosistemas</h3>
-          <p>Define seis medidas clave: coordinación interinstitucional, inclusión en instrumentos de gestión territorial, fortalecimiento y difusión de importancia ecosistémica, turismo sostenible, mecanismos de retribución por servicios ecosistémicos (MRSE), y fomento de Áreas de Conservación (ACR, ACP, ACA).</p>
-          <span class="funcion-tag">Art. 4° – Medidas de conservación</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">6°</div>
-        <div class="funcion-body">
-          <h3>MML como autoridad local de conservación</h3>
-          <p>La MML establece disposiciones para regular la organización del espacio físico y uso de suelo, así como la <strong>protección y conservación del ambiente</strong> en la provincia de Lima. La coordinación con municipalidades distritales se realiza a través de sus órganos competentes.</p>
-          <span class="funcion-tag">Art. 6° – Autoridades locales</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">7°</div>
-        <div class="funcion-body">
-          <h3>Funciones específicas de la MML en ecosistemas</h3>
-          <p>Asigna funciones concretas a cada órgano de la MML: el <strong>IMP</strong> integra ecosistemas en el Plan Metropolitano; el <strong>ICL</strong> los incluye en el SIT; la <strong>Gerencia de Servicios a la Ciudad y Gestión Ambiental</strong> lidera la educación ambiental; la <strong>Subgerencia de Gestión Ambiental</strong> supervisa limpieza pública y evita afectación de ecosistemas; <strong>PROHVILLA</strong> gestiona los Pantanos de Villa.</p>
-          <span class="funcion-tag">Art. 7° – Funciones de la MML</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">8°</div>
-        <div class="funcion-body">
-          <h3>Coordinación interinstitucional vía CAMET</h3>
-          <p>La coordinación se realiza a través de la <strong>Comisión Ambiental Metropolitana (CAMET)</strong>, regulada por la Ordenanza N.° 2256. La CAMET propone la conformación de <strong>Grupos Técnicos Metropolitanos (GTM)</strong> para abordar temáticas de protección y conservación de ecosistemas.</p>
-          <span class="funcion-tag">Art. 8° – Coordinación CAMET</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">10°</div>
-        <div class="funcion-body">
-          <h3>Educación y sensibilización ambiental sobre ecosistemas</h3>
-          <p>La MML a través de la <strong>Gerencia de Servicios a la Ciudad y Gestión Ambiental</strong>, en coordinación con las municipalidades distritales, desarrolla actividades de educación, sensibilización y difusión sobre el rol de los ecosistemas. Incorporan acciones en sus programas EDUCCA.</p>
-          <span class="funcion-tag">Art. 10° – Educación ambiental</span>
-        </div>
-      </div>
-
-      <div class="funcion-card" style="border-left:4px solid #2e7d32;">
-        <div class="funcion-num" style="background:#2e7d32;">D.C.1</div>
-        <div class="funcion-body">
-          <h3>Declaración de interés metropolitano</h3>
-          <p>Se declara de <strong>interés metropolitano la protección, conservación, recuperación y rehabilitación, así como la puesta en valor de los ecosistemas</strong> de la provincia de Lima. Fundamento para la intervención prioritaria de la MML en materia ecosistémica.</p>
-          <span class="funcion-tag naranja">Disp. Comp. Primera – Interés metropolitano</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Tabla comparativa -->
-    <div class="section-title">
-      <span class="icon">🔁</span> Comparativo de alcance y funciones de la MML en ambas ordenanzas
-    </div>
-    <div style="background:white; border-radius:12px; padding:20px 24px; box-shadow:var(--sombra); margin-bottom:28px; overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; font-size:0.82rem; min-width:580px;">
-        <thead>
-          <tr style="background:var(--verde-suave);">
-            <th style="padding:10px 14px; text-align:left; color:var(--verde-oscuro); width:22%;">Dimensión</th>
-            <th style="padding:10px 14px; text-align:left; color:#0277bd; width:39%;">🏖️ Ord. 1850-2014 (Playas)</th>
-            <th style="padding:10px 14px; text-align:left; color:#2e7d32; width:39%;">🌿 Ord. 2427-2022 (Ecosistemas)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid #f0f0f0;">
-            <td style="padding:9px 14px; font-weight:600; color:#555;">Ámbito</td>
-            <td style="padding:9px 14px;">Playas del litoral de la provincia de Lima</td>
-            <td style="padding:9px 14px;">Todos los ecosistemas de la provincia de Lima</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;">
-            <td style="padding:9px 14px; font-weight:600; color:#555;">Rol de la MML</td>
-            <td style="padding:9px 14px;">Órgano rector del SMGA; autoridad que habilita y supervisa playas</td>
-            <td style="padding:9px 14px;">Articuladora de acciones de conservación; normativa de uso de suelo</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0;">
-            <td style="padding:9px 14px; font-weight:600; color:#555;">Instrumento clave</td>
-            <td style="padding:9px 14px;">Resolución de habilitación de playas (Gerencia del Ambiente)</td>
-            <td style="padding:9px 14px;">Mapa Nacional de Ecosistemas integrado al Plan Metropolitano</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;">
-            <td style="padding:9px 14px; font-weight:600; color:#555;">Unidad ejecutora</td>
-            <td style="padding:9px 14px;">Subgerencia de Evaluación y Calidad Ambiental</td>
-            <td style="padding:9px 14px;">Gerencia de Servicios a la Ciudad y Gestión Ambiental + Subg. Gestión Ambiental</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0;">
-            <td style="padding:9px 14px; font-weight:600; color:#555;">Coordinación</td>
-            <td style="padding:9px 14px;">MML ↔ Municipalidades distritales costeras + DIGESA + PNP</td>
-            <td style="padding:9px 14px;">MML ↔ Municipalidades distritales ↔ CAMET ↔ GTM + sociedad civil</td>
-          </tr>
-          <tr style="border-bottom:1px solid #f0f0f0; background:#fafafa;">
-            <td style="padding:9px 14px; font-weight:600; color:#555;">Sanción</td>
-            <td style="padding:9px 14px;">Gerencia de Fiscalización y Control emite Resolución de Sanción a distritos incumplidores</td>
-            <td style="padding:9px 14px;">Códigos 07-0108, 07-0125, 07-0229 del CISA de la MML</td>
-          </tr>
-          <tr style="background:#e8f5ec;">
-            <td style="padding:9px 14px; font-weight:700; color:var(--verde-oscuro);">Vínculo con DAVE</td>
-            <td style="padding:9px 14px; color:var(--verde-oscuro);">Función 1: Evaluar y vigilar gestión ambiental integral de playas (ROF 2026)</td>
-            <td style="padding:9px 14px; color:var(--verde-oscuro);">Función 9: Supervisión de ecosistemas frágiles; Función 6: Reservas ambientales (ROF 2026)</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="footer">
-      Municipalidad Metropolitana de Lima · División de Áreas Verdes y Ecosistemas · Análisis de Ordenanzas 1850-2014 y 2427-2022
-    </div>
+  </svg>
   </div>
 
-  <!-- ========== TAB: BASE LEGAL ========== -->
-  <div id="tab-baselegal" class="tab-content">
+  <div class="footer">Municipalidad Metropolitana de Lima · TUO ROF – Ord. N.° 2813-2026-MML · Gerencia de Servicios a la Ciudad y Gestión Ambiental</div>
+</div>
 
-    <div class="section-title">
-      <span class="icon">📜</span> Base Legal
-    </div>
+<!-- ========== TAB: COMPETENCIAS ========== -->
+<div id="tab-competencias" class="tab-content">
+  <div class="section-title"><span class="icon">🎯</span> Competencias clave de la División</div>
 
-    <div class="info-note">
-      Marco normativo que sustenta las funciones y competencias de la División de Áreas Verdes y Ecosistemas de la Municipalidad Metropolitana de Lima, según el Entregable N.° 03-2026.
-    </div>
-
-    <div class="legal-grid">
-      <div class="legal-item">
-        <strong>Constitución Política del Perú, 1993</strong>
-        Marco constitucional del derecho al ambiente equilibrado y adecuado.
-      </div>
-      <div class="legal-item">
-        <strong>Ley N.° 28611 – Ley General del Ambiente</strong>
-        Establece los principios y normas básicas para garantizar el derecho a un ambiente saludable.
-      </div>
-      <div class="legal-item">
-        <strong>Ley N.° 27972 – Ley Orgánica de Municipalidades</strong>
-        Define las competencias municipales en materia de medio ambiente y servicios a la ciudad.
-      </div>
-      <div class="legal-item">
-        <strong>Ley N.° 29332 – Plan de Incentivos a la Mejora de la Gestión Municipal</strong>
-        Marco para la implementación de metas ambientales municipales.
-      </div>
-      <div class="legal-item">
-        <strong>Ley N.° 30011 – Modificatoria Ley SINEFA</strong>
-        Modifica la Ley del Sistema Nacional de Evaluación y Fiscalización Ambiental.
-      </div>
-      <div class="legal-item">
-        <strong>D. Leg. N.° 1013 – Creación del Ministerio del Ambiente</strong>
-        Aprueba la creación, organización y funciones del MINAM.
-      </div>
-      <div class="legal-item">
-        <strong>D.S. N.° 012-2009-MINAM – Política Nacional del Ambiente</strong>
-        Establece los lineamientos de política ambiental a nivel nacional.
-      </div>
-      <div class="legal-item">
-        <strong>Ordenanza N.° 1628-MML – Política Metropolitana del Ambiente</strong>
-        Aprueba la política ambiental de la provincia de Lima.
-      </div>
-      <div class="legal-item">
-        <strong>Ordenanza N.° 2427-MML – Conservación de Ecosistemas</strong>
-        Medidas para el fortalecimiento de la conservación de los ecosistemas de la provincia de Lima.
-      </div>
-      <div class="legal-item">
-        <strong>Ordenanza N.° 1852-2014-MML – Áreas Verdes</strong>
-        Conservación, gestión y mantenimiento de áreas verdes en la provincia de Lima.
-      </div>
-      <div class="legal-item">
-        <strong>Ordenanza N.° 1850-2014-MML – Playas del Litoral</strong>
-        Gestión integral ambiental de las playas del litoral en la provincia de Lima.
-      </div>
-      <div class="legal-item" style="border-left-color: var(--verde-medio);">
-        <strong style="color:var(--verde-oscuro);">Ordenanza N.° 2729-2025-MML (T.U.O. ROF)</strong>
-        Aprueba el Reglamento de Organización y Funciones de la Municipalidad Metropolitana de Lima.
-      </div>
-      <div class="legal-item" style="border-left-color: var(--verde-medio);">
-        <strong style="color:var(--verde-oscuro);">Ordenanza N.° 2813-2026 – Modificatoria ROF</strong>
-        Modifica el T.U.O. del ROF y establece las funciones actuales de la División de Áreas Verdes y Ecosistemas.
-      </div>
-    </div>
-
-    <div class="footer">
-      Municipalidad Metropolitana de Lima · División de Áreas Verdes y Ecosistemas · Base Legal según Entregable N.° 03-2026 · OS N.° 008108-2026-MML-OGA-OL
-    </div>
+  <div class="comp-card">
+    <div class="comp-title">🌊 Gestión ambiental integral de playas</div>
+    <div class="comp-text">La División evalúa y vigila las playas del litoral metropolitano en cumplimiento de la Ord. N.° 1850-2014-MML. Emite los Informes Técnicos que sustentan las Resoluciones de Habilitación de Playas emitidas por la Gerencia del Ambiente (Art. 22° Ord. 1850-2014). Realiza supervisiones inopinadas, atiende quejas ambientales y remite informes sobre el estado situacional de cada playa.</div>
   </div>
 
-</div><!-- /main -->
+  <div class="comp-card">
+    <div class="comp-title">🌳 Autorización de tala, poda severa y traslado arbóreo</div>
+    <div class="comp-text">La MML a través de la División ejerce la potestad exclusiva de autorizar la tala, poda severa y/o traslado de especies arbóreas en áreas de uso público de toda la provincia de Lima (Art. 22° Ord. 1852-2014). Esta función se materializa mediante Informes Técnicos que evalúan el estado fitosanitario del arbolado y determinan la procedencia del tratamiento, así como las medidas de compensación arbórea correspondientes.</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-title">⚠️ Informe Técnico de Riesgo (ITR)</div>
+    <div class="comp-text">En situaciones de emergencia por riesgo muy alto de caída de arbolado urbano, la División emite el Informe Técnico de Riesgo (ITR), instrumento habilitante para la intervención de emergencia. El ITR es exigido tanto para la MML como para las municipalidades distritales (Arts. 25° y 35° Ord. 1852-2014). Los casos de emergencia son atendidos por la propia municipalidad competente sin necesidad de resolución previa.</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-title">🦋 Supervisión de ecosistemas frágiles</div>
+    <div class="comp-text">La División supervisa y evalúa ambientalmente los ecosistemas frágiles de la provincia de Lima (lomas costeras, humedales, fajas marginales de ríos), en coordinación con SERFOR, el Ministerio Público y la PNP. Actúa en el marco de la Ord. N.° 2427-2022-MML, que establece medidas para el fortalecimiento de la conservación de los ecosistemas. Participa en el Protocolo de Actuación Interinstitucional para ecosistemas frágiles.</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-title">🗺️ Planificación metropolitana de áreas verdes</div>
+    <div class="comp-text">La División tiene a cargo la elaboración del Plan Metropolitano de Áreas Verdes (Art. 15° Ord. 1852-2014), instrumento directriz con horizonte de diez años que norma la creación, conservación y gestión de las áreas verdes de la ciudad. Asimismo, solicita y evalúa los inventarios de áreas verdes y arbolado urbano de los 43 distritos de la provincia, y emite opinión técnica sobre los Planes Distritales de Áreas Verdes.</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-title">📣 Sistema de Denuncias Ambientales</div>
+    <div class="comp-text">La División implementa y gestiona el Sistema de Denuncias Ambientales de la MML, atendiendo denuncias sobre afectación de arbolado urbano y áreas verdes. Coordina con la Fiscalía Especializada en Materia Ambiental (FEMA), SERFOR y otros órganos. Emite informes técnicos sobre cada denuncia y, cuando corresponde, remite actuados a la Gerencia de Fiscalización y Control.</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-title">💧 Gestión de recursos hídricos para áreas verdes</div>
+    <div class="comp-text">Diseña y promueve iniciativas sobre el uso de aguas residuales tratadas para el riego de áreas verdes en la provincia. Participa en mesas técnicas con SERFOR y actores de las cuencas Lurín, Chillón y Rímac, y propone proyectos de gestión integrada de recursos hídricos urbanos (Actividad POI N.° 1234 – Tarea 2).</div>
+  </div>
+
+  <div class="footer">Fuente: TUO ROF MML – Ord. N.° 2813-2026-MML · Ord. N.° 1850, 1852-2014 y 2427-2022-MML</div>
+</div>
+
+<!-- ========== TAB: ORDENANZAS ========== -->
+<div id="tab-ordenanzas" class="tab-content">
+
+  <!-- ORD 1852-2014 -->
+  <div class="ord-header" style="background:linear-gradient(135deg,#2e7d32,#388e3c);">
+    <div style="font-size:0.75rem; opacity:0.8; text-transform:uppercase; letter-spacing:.07em;">Ordenanza N.° 1852-2014-MML</div>
+    <div style="font-size:1.05rem; font-weight:800; margin-top:4px;">Para la Conservación y Gestión de Áreas Verdes en la Provincia de Lima</div>
+    <div style="font-size:0.8rem; opacity:0.8; margin-top:4px;">Publicada: 28 de diciembre de 2014 · Vigente</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 1°</div>
+    <div class="ord-titulo">Objeto</div>
+    <div class="ord-texto">Establece el marco normativo y lineamientos generales que rige la gestión de áreas verdes de la provincia de Lima: creación, conservación, protección, valoración, manejo, mantenimiento y sostenibilidad de las áreas verdes, garantizando la gobernanza y su uso público.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 11°</div>
+    <div class="ord-titulo">Competencias en materia de áreas verdes a nivel metropolitano</div>
+    <div class="ord-texto">La MML mantiene competencias y funciones metropolitanas especiales que la facultan a constituir, organizar y administrar el sistema metropolitano de parques. La <strong>Gerencia del Ambiente actúa como órgano ejecutivo, supervisor y fiscalizador</strong> del Sistema Metropolitano de Gestión Ambiental. Emite informes técnicos que fundamentan las intervenciones de la Gerencia de Fiscalización y Control.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 15°</div>
+    <div class="ord-titulo">Planes de gestión de áreas verdes</div>
+    <div class="ord-texto">La Gerencia del Ambiente es el órgano encargado de elaborar el <strong>Plan Metropolitano de Áreas Verdes de Lima</strong>, instrumento directriz para la planificación de la creación, conservación, protección y gestión de las áreas verdes de la ciudad con horizonte de 10 años. Su uso es obligatorio para todas las entidades competentes.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 16°</div>
+    <div class="ord-titulo">Inventario Metropolitano de Áreas Verdes</div>
+    <div class="ord-texto">La Gerencia del Ambiente elabora y mantiene actualizado el Inventario Metropolitano de Áreas Verdes, con actualización cada tres años. Cada área verde cuenta con registro en un <strong>Sistema de Información Geográfico (SIG)</strong>, con datos de identificación, localización, especie y estado fitosanitario del arbolado.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 21°</div>
+    <div class="ord-titulo">Protección de áreas verdes</div>
+    <div class="ord-texto">La MML y las Municipalidades Distritales están obligadas a conservar, defender, proteger y mantener las áreas verdes de uso público bajo su jurisdicción, sea directamente o a través de convenios con entidades públicas, privadas o la sociedad civil organizada.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 22°</div>
+    <div class="ord-titulo">Protección del arbolado urbano</div>
+    <div class="ord-texto">La MML y las Municipalidades Distritales están obligadas a conservar, defender, proteger y mantener el arbolado urbano en áreas públicas. Se establecen medidas de protección para no disminuir el patrimonio arbóreo. La <strong>tala, poda severa o traslado requieren autorización</strong> emitida mediante informe técnico de la División.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 25°</div>
+    <div class="ord-titulo">Tala y/o poda severa de especies arbóreas</div>
+    <div class="ord-texto">La tala y/o poda severa en espacios públicos <strong>está prohibida</strong>. Excepcionalmente procederá cuando: (a) exista riesgo muy alto de caída para la integridad física de bienes o personas; (b) la especie esté muerta o en muerte regresiva por agentes fitopatológicos. Los casos de emergencia o seguridad deben estar avalados por un <strong>Informe Técnico de Riesgo (ITR)</strong>.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#2e7d32;">
+    <div class="ord-art" style="color:#2e7d32;">Artículo 35°</div>
+    <div class="ord-titulo">Riesgos del arbolado urbano</div>
+    <div class="ord-texto">La Gerencia del Ambiente deberá detectar y valorar el riesgo de fractura o caída de los árboles urbanos. El reglamento define la metodología de valoración de riesgo. <strong>Ante una emergencia por riesgo muy alto de caída, la municipalidad competente podrá intervenir directamente</strong>, debiendo emitir en forma inmediata un ITR y posteriormente el acto resolutivo que corresponda.</div>
+  </div>
+
+  <div style="margin: 28px 0 12px;"></div>
+
+  <!-- ORD 1850-2014 -->
+  <div class="ord-header" style="background:linear-gradient(135deg,#1565c0,#1976d2);">
+    <div style="font-size:0.75rem; opacity:0.8; text-transform:uppercase; letter-spacing:.07em;">Ordenanza N.° 1850-2014-MML</div>
+    <div style="font-size:1.05rem; font-weight:800; margin-top:4px;">Para la Gestión Ambiental Integral de las Playas del Litoral de la Provincia de Lima</div>
+    <div style="font-size:0.8rem; opacity:0.8; margin-top:4px;">Publicada: 23 de diciembre de 2014 · Vigente</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#1565c0;">
+    <div class="ord-art" style="color:#1565c0;">Artículo 1°</div>
+    <div class="ord-titulo">Objeto</div>
+    <div class="ord-texto">Establece disposiciones para la gestión ambiental integral de las playas del litoral de la provincia de Lima, a fin de asegurar su conservación, prevenir su contaminación y degradación, garantizar su naturaleza de espacio público y la prestación de servicios en condiciones de seguridad, higiene y salubridad.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#1565c0;">
+    <div class="ord-art" style="color:#1565c0;">Artículo 3°</div>
+    <div class="ord-titulo">Autoridad competente</div>
+    <div class="ord-texto">La <strong>Municipalidad Metropolitana de Lima como órgano rector del Sistema Metropolitano de Gestión Ambiental</strong> es la autoridad competente para aprobar normas que regulen la preservación, protección y control de las playas del litoral de la provincia de Lima.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#1565c0;">
+    <div class="ord-art" style="color:#1565c0;">Artículo 22°</div>
+    <div class="ord-titulo">Habilitación de las playas</div>
+    <div class="ord-texto">La declaratoria de habilitación de playa se realiza mediante <strong>resolución de la Gerencia del Ambiente de la MML</strong>, a solicitud de la respectiva Municipalidad Distrital. Dicha resolución tiene vigencia de un año. Solo se considera playa habilitada aquella con resolución vigente que reúne las condiciones de calidad ambiental, higiene y salubridad, vías de acceso y núcleo de servicios necesario.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#1565c0;">
+    <div class="ord-art" style="color:#1565c0;">Artículo 24°</div>
+    <div class="ord-titulo">Informe Técnico para la declaración de habilitación de playas</div>
+    <div class="ord-texto">La Subgerencia de Evaluación y Calidad Ambiental de la Gerencia del Ambiente realiza la evaluación de cumplimiento de los requisitos de habilitación y emite el <strong>Informe Técnico</strong> para la declaración de habilitación de las playas, en un plazo máximo de 15 días hábiles desde la solicitud.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#1565c0;">
+    <div class="ord-art" style="color:#1565c0;">Artículo 37°</div>
+    <div class="ord-titulo">Obligaciones de la MML en gestión de playas</div>
+    <div class="ord-texto">La MML tiene como funciones: (a) emitir normas de gestión ambiental de playas; (b) coordinar con las Municipalidades Distritales la planificación, supervisión y control ambiental del litoral; (c) fiscalizar el cumplimiento de la presente ordenanza; (d) fomentar la investigación y el monitoreo de la calidad ambiental de las playas de la provincia.</div>
+  </div>
+
+  <div style="margin: 28px 0 12px;"></div>
+
+  <!-- ORD 2427-2022 -->
+  <div class="ord-header" style="background:linear-gradient(135deg,#37474f,#455a64);">
+    <div style="font-size:0.75rem; opacity:0.8; text-transform:uppercase; letter-spacing:.07em;">Ordenanza N.° 2427-2022-MML</div>
+    <div style="font-size:1.05rem; font-weight:800; margin-top:4px;">Que establece Medidas para el Fortalecimiento de la Conservación de los Ecosistemas de la Provincia de Lima</div>
+    <div style="font-size:0.8rem; opacity:0.8; margin-top:4px;">Publicada: 20 de enero de 2022 · Vigente</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#455a64;">
+    <div class="ord-art" style="color:#455a64;">Artículo 1°</div>
+    <div class="ord-titulo">Objeto y finalidad</div>
+    <div class="ord-texto">Establece medidas de integración y articulación entre la MML y las municipalidades distritales dirigidas a promover el <strong>fortalecimiento de la conservación, protección y aprovechamiento sostenible de los ecosistemas</strong> en la provincia de Lima (desiertos costeros, humedales, lomas, matorrales andinos, ríos y fajas marginales).</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#455a64;">
+    <div class="ord-art" style="color:#455a64;">Artículo 4°</div>
+    <div class="ord-titulo">Medidas para el fortalecimiento de la conservación</div>
+    <div class="ord-texto">Incluyen: (a) coordinación interinstitucional MML–distritos–SERFOR; (b) incluir información geográfica de ecosistemas en el PLAM y SIT; (c) fortalecer y difundir la importancia de los ecosistemas y sus servicios; (d) promover el turismo sostenible; (e) fomentar mecanismos de retribución por servicios ecosistémicos (MRSE); (f) desarrollar Áreas de Conservación Ambiental (ACA).</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#455a64;">
+    <div class="ord-art" style="color:#455a64;">Artículo 7°</div>
+    <div class="ord-titulo">Funciones de la Municipalidad Metropolitana de Lima</div>
+    <div class="ord-texto">La <strong>Gerencia de Servicios a la Ciudad y Gestión Ambiental</strong> lidera y desarrolla las acciones de educación ambiental en materia de ecosistemas. La <strong>Subgerencia de Gestión Ambiental</strong> supervisa la prestación del servicio de limpieza pública para evitar la afectación de ecosistemas. La Subgerencia de Estrategia Ambiental incluye información de ecosistemas en el Sistema Metropolitano de Información Ambiental.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#455a64;">
+    <div class="ord-art" style="color:#455a64;">Artículo 8°</div>
+    <div class="ord-titulo">Coordinación interinstitucional – CAMET</div>
+    <div class="ord-texto">La coordinación para la conservación de ecosistemas se realiza a través de la <strong>Comisión Ambiental Metropolitana (CAMET)</strong>, regulada por la Ord. N.° 2256-MML. La CAMET propone la conformación de <strong>Grupos Técnicos Metropolitanos (GTM)</strong> para abordar temáticas ambientales específicas, incluidas las relacionadas con la protección y conservación de ecosistemas.</div>
+  </div>
+
+  <div class="ord-card" style="border-left-color:#455a64;">
+    <div class="ord-art" style="color:#455a64;">Artículo 10°</div>
+    <div class="ord-titulo">Acciones de educación ambiental</div>
+    <div class="ord-texto">La MML a través de la Gerencia de Servicios a la Ciudad y Gestión Ambiental, en coordinación con las municipalidades distritales, desarrolla actividades de <strong>educación, sensibilización y difusión</strong> sobre el rol de los ecosistemas, incorporando acciones en sus programas EDUCCA (Programa de Segregación en la Fuente y Recolección Selectiva de Residuos Sólidos).</div>
+  </div>
+
+  <div class="footer">Fuente: Ordenanzas N.° 1850-2014, 1852-2014 y 2427-2022 · Municipalidad Metropolitana de Lima</div>
+</div>
+
+<!-- ========== TAB: BASE LEGAL ========== -->
+<div id="tab-baselegal" class="tab-content">
+  <div class="section-title"><span class="icon">📜</span> Base Legal de la División de Áreas Verdes y Ecosistemas</div>
+
+  <div class="base-item"><div class="base-icon">🏛️</div><div class="base-text"><strong>Ley N.° 27972 – Ley Orgánica de Municipalidades</strong><p>Marco general de competencias y funciones de las municipalidades. Fundamento de la potestad reglamentaria y ejecutiva de la MML.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">📄</div><div class="base-text"><strong>Ord. N.° 2813-2026-MML – TUO ROF MML (vigente)</strong><p>Reglamenta la organización y funciones de la MML. Art. 120°: Funciones de la División de Áreas Verdes y Ecosistemas. Arts. 117-122: Gerencia de Servicios a la Ciudad y subgerencias.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">📄</div><div class="base-text"><strong>Ord. N.° 2689-2025-MML – TUO ROF MML anterior</strong><p>Versión precedente del ROF. Arts. 119-120: Subgerencia de Gestión Ambiental. Arts. 121-122: Subgerencia de Servicios a la Ciudad.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">🌊</div><div class="base-text"><strong>Ord. N.° 1850-2014-MML – Playas del Litoral de Lima</strong><p>Gestión ambiental integral de las playas. Habilita a la Gerencia del Ambiente a emitir Resoluciones de Habilitación de Playas sustentadas en informes técnicos de la División.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">🌳</div><div class="base-text"><strong>Ord. N.° 1852-2014-MML – Áreas Verdes de Lima</strong><p>Marco normativo de la gestión de áreas verdes. Establece la facultad de la MML para autorizar tala, poda severa y traslado arbóreo, así como el Informe Técnico de Riesgo (ITR) para emergencias.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">🦋</div><div class="base-text"><strong>Ord. N.° 2427-2022-MML – Conservación de Ecosistemas</strong><p>Medidas para el fortalecimiento de la conservación de los ecosistemas en la provincia de Lima. Asigna funciones a la GSCGA y la Subgerencia de Gestión Ambiental en materia de supervisión ecosistémica.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">🌿</div><div class="base-text"><strong>Ley N.° 28611 – Ley General del Ambiente</strong><p>Marco normativo ambiental nacional. Principios de prevención, precaución y responsabilidad ambiental aplicables a las funciones de la División.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">🌲</div><div class="base-text"><strong>Ley N.° 29763 – Ley Forestal y de Fauna Silvestre</strong><p>Marco para el manejo del arbolado urbano, en coordinación con el Servicio Nacional Forestal y de Fauna Silvestre (SERFOR). Aplicable a procedimientos de tala, traslado y compensación arbórea.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">💧</div><div class="base-text"><strong>Ley N.° 30215 – Mecanismos de Retribución por Servicios Ecosistémicos (MRSE)</strong><p>Marco para la implementación de instrumentos de conservación de ecosistemas. Referenciada en la Ord. N.° 2427-2022-MML como herramienta de gestión ecosistémica de la División.</p></div></div>
+
+  <div class="base-item"><div class="base-icon">📋</div><div class="base-text"><strong>Plan Operativo Institucional (POI) 2026</strong><p>Actividad 1235: Gestión Ambiental (Tareas 3, 4 y 5) · Actividad 1234: Gestión de Estrategias para Cambio Climático (Tareas 2 y 3). Centro de Costo 12010 – Unidad de Gestión 02: Servicios Municipales.</p></div></div>
+
+  <div class="footer">Municipalidad Metropolitana de Lima · División de Áreas Verdes y Ecosistemas · ROF 2026 &nbsp;|&nbsp; Entregable N.° 03-2026 · OS N.° 008108-2026-MML-OGA-OL</div>
+</div>
 
 <script>
 function showTab(name, el) {
